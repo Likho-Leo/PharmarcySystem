@@ -1,0 +1,143 @@
+﻿
+@{
+	ViewData["Title"] = "Upload Prescription";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+
+    <!-- Sidebar: always visible -->
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="width: 250px; z-index:0">
+        <h3 class="w3-bar-item">Menu</h3>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Customer" asp-action="Home">Home</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="LoadPrescription">Upload Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="ProcessedScript">Processed Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="UnprocessedScript">Unprocessed Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Order" asp-action="Order">Order</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="GenerateReport" asp-action="GenerateReport">Generate Report</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Account" asp-action="Account">Account</a>
+    </div>
+
+
+    <!-- Main content: shifted right to make space for sidebar -->
+    <div id="main" style="margin-left: 250px;">
+
+        <!-- Header: remove openNav button -->
+        <div class="w3-teal">
+            <div class="w3-container" style="display: flex; align-items: center; gap: 16px; padding:20px">
+                <!-- Removed the sidebar toggle button -->
+                <h1 class="display-4" style="margin: 0;">UPLOAD PRESCRIPTION</h1>
+            </div>
+        </div>
+
+        <!-- Rest of your content remains unchanged -->
+
+
+
+        <div class="w3-container">
+            <h3>Ibhayi Pharmacy Systems</h3>
+            <hr style="border: 1px solid white; width: 100%; text-align: center;" />
+            
+            <p>
+                Welcome to the Ibhayi Pharmacy Systems upload prescription page.
+            </p>
+            <p>Upload your prescription and enter the date. You can dispense your prescription once it has been uploaded.</p>
+            <br />
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <label for="DOB" class="form-label">Date<span style="color: red;">*</span></label>
+                    <input id="DOB" class="form-control" type="date" />
+                </div>
+                <div class="col-md-6">
+                    <label for="formFile" class="form-label">Upload Prescription (PDF)<span style="color: red;">*</span></label>
+                    <div class="d-flex gap-2">
+                        <input class="form-control" type="file" id="formFile">
+                        <button type="submit" class="btn btn-success">Upload</button>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-hover" style="width:90%;">
+                <thead>
+                    <tr class="table-info">
+                        <th scope="col">
+                            <input type="checkbox" id="selectAll">
+                        </th>
+                        <th scope="col">No.</th>
+                        <th scope="col">Prescription</th>
+                        <th scope="col" onclick="sortTable(3)">Date ⬍</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td><input type="checkbox" class="row-checkbox"></td>
+                        <td>Prescription_John_Doe_2025_05_20.pdf</td>
+                        <td>2025 05 20</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><input type="checkbox" class="row-checkbox"></td>
+                        <td>Prescription_John_Doe_2025_05_15.pdf</td>
+                        <td>2025 05 15</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <button type="submit" class="btn btn-success">Dispense</button>
+           
+        </div>
+    </div>
+
+    <script>
+              document.getElementById("selectAll").addEventListener("change", function () {
+            const checkboxes = document.querySelectorAll(".row-checkbox");
+            checkboxes.forEach(cb => cb.checked = this.checked);
+        });
+
+        function w3_open() {
+          document.getElementById("main").style.marginLeft = "25%";
+          document.getElementById("mySidebar").style.width = "25%";
+          document.getElementById("mySidebar").style.display = "block";
+          document.getElementById("openNav").style.display = 'none';
+        }
+        function w3_close() {
+          document.getElementById("main").style.marginLeft = "0%";
+          document.getElementById("mySidebar").style.display = "none";
+          document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        function myAccFunc() {
+          var x = document.getElementById("demoAcc");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myDropFunc() {
+          var x = document.getElementById("demoDrop");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+    </script>
+</body>

@@ -1,0 +1,650 @@
+﻿@{
+    ViewData["Title"] = "Pharmacist Dispensing Report";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+@* <link rel="stylesheet" href="~/css/pharmacy-theme.css" /> *@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .text-white {
+        --bs-text-opacity: 1;
+        color: #000 !important;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 15px;
+        margin-bottom: 0;
+    }
+
+    .card-body {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        padding: 15px;
+        margin-bottom: 1rem;
+    }
+
+    .order-card {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    .order-header {
+        background: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .patient-info {
+        background: #e9ecef;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .medication-item {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+
+    .status-pending {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .status-processing {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .status-ready {
+        background: #28a745;
+        color: white;
+    }
+
+    .priority-high {
+        border-left: 4px solid #dc3545;
+    }
+
+    .priority-medium {
+        border-left: 4px solid #ffc107;
+    }
+
+    .priority-low {
+        border-left: 4px solid #28a745;
+    }
+
+    .summary-card {
+        text-align: center;
+        padding: 20px;
+        border-radius: 8px;
+        color: white;
+        margin-bottom: 10px;
+    }
+
+        .summary-card.pending {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .summary-card.processing {
+            background: #17a2b8;
+        }
+
+        .summary-card.ready {
+            background: #28a745;
+        }
+
+        .summary-card.total {
+            background: #6c757d;
+        }
+
+        .summary-card h4 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .summary-card p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+
+    .btn {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .action-buttons {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .alert {
+        margin-top: 1rem;
+    }
+</style>
+<body>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large"
+                onclick="w3_close()">
+            Close &times;
+        </button>
+
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="Dashboard" asp-action="Dashboard">Home</a>
+
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+            Upload Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="Prescriptions">Upload Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="DisplayAllPrescriptions">All Prescriptions</a>
+        </div>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc1()">
+            Dispense Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc1" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="FulfillOrders">Dispense Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DispensePrescription">Proccess Orders</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DisplayHistory">Dispense Prescriptions</a>
+
+        </div>
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="PharmacistReport" asp-action="PharmacistReport">Go To Reports</a>
+
+    </div>
+
+    <div id="main">
+
+        <div class="w3-teal">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+            <div class="w3-container">
+                <h2 class="text-center">Generate Reports</h2>
+            </div>
+        </div>
+    </div>
+    <div class="container text-white">
+        <h2 class="heading">
+            <i class="fas fa-pills me-2"></i>
+            Pharmacist Dispensing Report
+        </h2>
+
+
+
+        <form method="post" asp-action="Generate" id="reportForm">
+            <!-- Date Range Section -->
+            <div>
+                <div class="card-header">
+                    <h5><i class="fas fa-calendar-alt me-2"></i>Date Range Selection</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="startDate" class="form-label">Start Date *</label>
+                            <input type="date" class="form-control" id="startDate" name="StartDate" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="endDate" class="form-label">End Date *</label>
+                            <input type="date" class="form-control" id="endDate" name="EndDate" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Configuration -->
+            <div>
+                <div class="card-header">
+                    <h5><i class="fas fa-cog me-2"></i>Report Configuration</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="groupBy" class="form-label">Group Report By</label>
+                            <select class="form-select" id="groupBy" name="GroupBy">
+                                <option value="Patient">Patient</option>
+                                <option value="Medication">Medication</option>
+                                <option value="Schedule">Schedule</option>
+                                <option value="Date">Date</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="reportFormat" class="form-label">Report Format</label>
+                            <select class="form-select" id="reportFormat" name="ReportFormat">
+                                <option value="pdf">PDF</option>
+                                <option value="excel">Excel</option>
+                                <option value="csv">CSV</option>
+                                <option value="word">Word Document</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Filters -->
+            <div>
+                <div class="card-header">
+                    <h5><i class="fas fa-filter me-2"></i>Additional Filters</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-12">
+                            <label for="statusFilter" class="form-label">Prescription Status</label>
+                            <select class="form-select" id="statusFilter" name="StatusFilter">
+                                <option value="">All Status</option>
+                                <option value="Dispensed">Dispensed</option>
+                                <option value="Ready">Ready for Collection</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Reports -->
+            <div>
+                <div class="card-header">
+                    <h5><i class="fas fa-history me-2"></i>Recent Reports</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Report Name</th>
+                                    <th>Generated Date</th>
+                                    <th>Period</th>
+                                    <th class="d-none d-md-table-cell">Format</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Daily Dispensing Summary</td>
+                                    <td>2024-05-22</td>
+                                    <td>May 22, 2024</td>
+                                    <td class="d-none d-md-table-cell">PDF</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-info" onclick="downloadReport('daily')">
+                                            <i class="fas fa-download"></i>
+                                            <span class="d-none d-sm-inline ms-1">Download</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Weekly Dispensing Report</td>
+                                    <td>2024-05-20</td>
+                                    <td>May 13-19, 2024</td>
+                                    <td class="d-none d-md-table-cell">Excel</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-info" onclick="downloadReport('weekly')">
+                                            <i class="fas fa-download"></i>
+                                            <span class="d-none d-sm-inline ms-1">Download</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Monthly Activity Report</td>
+                                    <td>2024-05-01</td>
+                                    <td>April 2024</td>
+                                    <td class="d-none d-md-table-cell">PDF</td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-info" onclick="downloadReport('monthly')">
+                                            <i class="fas fa-download"></i>
+                                            <span class="d-none d-sm-inline ms-1">Download</span>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex flex-wrap gap-2 justify-content-center">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-file-alt me-2"></i>Generate Report
+                </button>
+                <button type="button" class="btn btn-info" onclick="previewReport()">
+                    <i class="fas fa-eye me-2"></i>Preview
+                </button>
+                <button type="button" class="btn btn-warning" onclick="saveTemplate()">
+                    <i class="fas fa-save me-2"></i>Save Template
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="clearFilters()">
+                    <i class="fas fa-eraser me-2"></i>Clear Filters
+                </button>
+            </div>
+        </form>
+    </div>
+
+   @*  <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .heading {
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .form-control, .form-select {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+            .form-control:focus, .form-select:focus {
+                background-color: rgba(255, 255, 255, 0.95);
+                border-color: #007bff;
+                box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+            }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+            .card:hover {
+                transform: translateY(-2px);
+            }
+
+        .card-header {
+            background: rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px 15px 0 0 !important;
+        }
+
+            .card-header h5 {
+                color: white;
+                margin: 0;
+                font-weight: 600;
+            }
+
+        label {
+            color: white;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .text-primary {
+            color: #4fc3f7 !important;
+        }
+
+        .text-success {
+            color: #81c784 !important;
+        }
+
+        .text-warning {
+            color: #ffb74d !important;
+        }
+
+        .text-info {
+            color: #64b5f6 !important;
+        }
+
+        .summary-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+            .summary-card:hover {
+                background: rgba(255, 255, 255, 0.1);
+                transform: scale(1.02);
+            }
+
+        .summary-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .table-dark {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+        }
+
+            .table-dark th {
+                border-color: rgba(255, 255, 255, 0.2);
+                color: white;
+                font-weight: 600;
+            }
+
+            .table-dark td {
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+
+        .btn {
+            border-radius: 25px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            }
+
+        .btn-success {
+            background: linear-gradient(45deg, #28a745, #20c997);
+        }
+
+        .btn-info {
+            background: linear-gradient(45deg, #17a2b8, #6f42c1);
+        }
+
+        .btn-warning {
+            background: linear-gradient(45deg, #ffc107, #fd7e14);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #6c757d, #495057);
+        }
+
+        .form-check-label {
+            color: white;
+            font-weight: 400;
+        }
+
+        .form-check-input {
+            margin-top: 0.3rem;
+        }
+
+        .icon-stat {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive adjustments */
+        @@media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .heading {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .summary-number {
+                font-size: 1.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .table-responsive {
+                font-size: 0.85rem;
+            }
+
+            .card-body {
+                padding: 1rem;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .summary-card {
+                padding: 1rem;
+            }
+
+            .summary-number {
+                font-size: 1.3rem;
+            }
+
+            .btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style> *@
+
+    <script>
+        // Set default dates
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+
+            document.getElementById('startDate').value = thirtyDaysAgo.toISOString().split('T')[0];
+            document.getElementById('endDate').value = today.toISOString().split('T')[0];
+        });
+
+        function previewReport() {
+            alert('Report preview functionality would be implemented here.');
+        }
+
+        function saveTemplate() {
+            const templateName = prompt('Enter template name:');
+            if (templateName) {
+                alert(`Template "${templateName}" saved successfully!`);
+            }
+        }
+
+        function clearFilters() {
+            if (confirm('Are you sure you want to clear all filters?')) {
+                document.getElementById('reportForm').reset();
+
+                // Reset dates to default
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+
+                document.getElementById('startDate').value = thirtyDaysAgo.toISOString().split('T')[0];
+                document.getElementById('endDate').value = today.toISOString().split('T')[0];
+
+                // Reset checkboxes to default
+                document.getElementById('includeSummary').checked = true;
+                document.getElementById('includeDetails').checked = true;
+                document.getElementById('includePricing').checked = true;
+            }
+        }
+
+        function downloadReport(reportType) {
+            alert(`Downloading ${reportType} report...\n\nIn the actual application, the file would be downloaded.`);
+        }
+    </script>
+    <script>
+        function w3_open() {
+          document.getElementById("main").style.marginLeft = "25%";
+          document.getElementById("mySidebar").style.width = "25%";
+          document.getElementById("mySidebar").style.display = "block";
+          document.getElementById("openNav").style.display = 'none';
+        }
+        function w3_close() {
+          document.getElementById("main").style.marginLeft = "0%";
+          document.getElementById("mySidebar").style.display = "none";
+          document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        function myAccFunc() {
+          var x = document.getElementById("demoAcc");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myAccFunc1() {
+          var x = document.getElementById("demoAcc1");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myDropFunc() {
+          var x = document.getElementById("demoDrop");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+    </script>
+</body>

@@ -1,0 +1,691 @@
+﻿@{
+    ViewData["Title"] = "Fulfill Customer Orders";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+@* <link rel="stylesheet" href="~/css/pharmacy-theme.css" /> *@
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .text-white {
+        --bs-text-opacity: 1;
+        color: #000 !important;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 15px;
+        margin-bottom: 0;
+    }
+
+    .card-body {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        padding: 15px;
+        margin-bottom: 1rem;
+    }
+
+    .order-card {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    .order-header {
+        background: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .patient-info {
+        background: #e9ecef;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .medication-item {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+
+    .status-pending {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .status-processing {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .status-ready {
+        background: #28a745;
+        color: white;
+    }
+
+    .priority-high {
+        border-left: 4px solid #dc3545;
+    }
+
+    .priority-medium {
+        border-left: 4px solid #ffc107;
+    }
+
+    .priority-low {
+        border-left: 4px solid #28a745;
+    }
+
+    .summary-card {
+        text-align: center;
+        padding: 20px;
+        border-radius: 8px;
+        color: white;
+        margin-bottom: 10px;
+    }
+
+        .summary-card.pending {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .summary-card.processing {
+            background: #17a2b8;
+        }
+
+        .summary-card.ready {
+            background: #28a745;
+        }
+
+        .summary-card.total {
+            background: #6c757d;
+        }
+
+        .summary-card h4 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .summary-card p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+
+    .btn {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .action-buttons {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .alert {
+        margin-top: 1rem;
+    }
+</style>
+<body>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large"
+                onclick="w3_close()">
+            Close &times;
+        </button>
+
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="Dashboard" asp-action="Dashboard">Home</a>
+
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+            Upload Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="Prescriptions">Upload Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="DisplayAllPrescriptions">All Prescriptions</a>
+        </div>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc1()">
+            Dispense Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc1" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="FulfillOrders">Dispense Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DispensePrescription">Proccess Orders</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DisplayHistory">Dispense Prescriptions</a>
+
+        </div>
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="PharmacistReport" asp-action="PharmacistReport">Go To Reports</a>
+
+    </div>
+
+    <div id="main">
+        <div class="w3-teal">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+            <div class="w3-container">
+                <h2 class="heading">Customer Orders</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-white">
+        <!-- Display Success/Error Messages -->
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
+        <!-- Filter and Search Section -->
+        <div class="card-header">
+            <h5>Filter Orders</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <select class="form-control" id="statusFilter">
+                        <option value="">All Status</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Processing">Processing</option>
+                        <option value="Ready">Ready for Collection</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="patientSearch" placeholder="Search by Patient ID">
+                </div>
+                <div class="col-md-3">
+                    <input type="date" class="form-control" id="dateFilter">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary" onclick="filterOrders()">
+                        <i class="fa fa-filter"></i> Filter
+                    </button>
+                    <button class="btn btn-secondary" onclick="clearFilters()">
+                        <i class="fa fa-refresh"></i> Clear
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Summary -->
+        <div class="card-header" style="margin-top: 1rem;">
+            <h5>Orders Summary</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="summary-card pending">
+                        <h4 id="pendingCount">3</h4>
+                        <p>Pending Orders</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-card processing">
+                        <h4 id="processingCount">2</h4>
+                        <p>Processing</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-card ready">
+                        <h4 id="readyCount">2</h4>
+                        <p>Ready for Collection</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="summary-card total">
+                        <h4 id="totalCount">7</h4>
+                        <p>Total Orders</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders List -->
+        <div class="card-header" style="margin-top: 1rem;">
+            <h5>Customer Orders</h5>
+        </div>
+        <div class="card-body">
+            <!-- Mock Order 1 - Pending -->
+            <div class="order-card priority-high">
+                <div class="order-header">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h6><i class="fa fa-file-text-o"></i> Order #PRC001</h6>
+                            <small>Submitted: 23/07/2025 09:15</small>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <span class="status-badge status-pending">
+                                Pending
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patient Information -->
+                <div class="patient-info">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-user"></i> Patient:</strong> John Smith<br>
+                            <strong>ID:</strong> 8502156789012
+                        </div>
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-user-md"></i> Doctor:</strong> Dr. Sarah Johnson<br>
+                            <strong>Contact:</strong> Available on request
+                        </div>
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-clock-o"></i> Submitted:</strong> 23/07/2025<br>
+                            <strong>Priority:</strong>
+                            <span class="text-danger">Today</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medication Details -->
+                <div class="medication-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong><i class="fa fa-medkit"></i> Medication:</strong> Amoxicillin 500mg<br>
+                            <strong>Code:</strong> AMX500<br>
+                            <strong>Quantity:</strong> 20 units
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Unit Price:</strong> R15.50<br>
+                            <strong>Total:</strong> R310.00
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Batch:</strong> BAT001<br>
+                            <strong>Expiry:</strong> 15/12/2025<br>
+                            <strong>Notes:</strong> Take with food
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-success" onclick="startProcessing(1)">
+                        <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DispensePrescription">Proccess Orders</a>
+                    </button>
+                    <a class="btn btn-info" asp-action="Edit" asp-route-id="1">
+                        <i class="fa fa-edit"></i> Edit Details
+                    </a>
+                    <button class="btn btn-warning" onclick="viewDetails(1)">
+                        <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="ViewFullDetails">View Full Details</a>
+                    </button>
+                    <button class="btn btn-secondary" onclick="printLabel(1)">
+                        <i class="fa fa-print"></i> Print Label
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mock Order 2 - Processing -->
+            <div class="order-card priority-medium">
+                <div class="order-header">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h6><i class="fa fa-file-text-o"></i> Order #PRC002</h6>
+                            <small>Submitted: 22/07/2025 14:30</small>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <span class="status-badge status-processing">
+                                Processing
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patient Information -->
+                <div class="patient-info">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-user"></i> Patient:</strong> Mary Wilson<br>
+                            <strong>ID:</strong> 7803125896321
+                        </div>
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-user-md"></i> Doctor:</strong> Dr. Michael Brown<br>
+                            <strong>Contact:</strong> Available on request
+                        </div>
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-clock-o"></i> Submitted:</strong> 22/07/2025<br>
+                            <strong>Priority:</strong>
+                            <span class="text-warning">Yesterday</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medication Details -->
+                <div class="medication-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong><i class="fa fa-medkit"></i> Medication:</strong> Lisinopril 10mg<br>
+                            <strong>Code:</strong> LIS010<br>
+                            <strong>Quantity:</strong> 30 units
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Unit Price:</strong> R8.75<br>
+                            <strong>Total:</strong> R262.50
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Batch:</strong> BAT002<br>
+                            <strong>Expiry:</strong> 20/11/2025<br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="markReady(2)">
+                        <i class="fa fa-check"></i> Mark Ready
+                    </button>
+                    <a class="btn btn-info" asp-action="Edit" asp-route-id="2">
+                        <i class="fa fa-edit"></i> Edit Details
+                    </a>
+                    <button class="btn btn-warning" onclick="viewDetails(2)">
+                        <i class="fa fa-eye"></i> View Full Details
+                    </button>
+                    <button class="btn btn-secondary" onclick="printLabel(2)">
+                        <i class="fa fa-print"></i> Print Label
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mock Order 3 - Ready -->
+            <div class="order-card priority-low">
+                <div class="order-header">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h6><i class="fa fa-file-text-o"></i> Order #PRC003</h6>
+                            <small>Submitted: 21/07/2025 11:45</small>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <span class="status-badge status-ready">
+                                Ready
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patient Information -->
+                <div class="patient-info">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-user"></i> Patient:</strong> David Lee<br>
+                            <strong>ID:</strong> 9012034567890
+                        </div>
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-user-md"></i> Doctor:</strong> Dr. Lisa White<br>
+                            <strong>Contact:</strong> Available on request
+                        </div>
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-clock-o"></i> Submitted:</strong> 21/07/2025<br>
+                            <strong>Priority:</strong>
+                            <span class="text-success">Standard</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medication Details -->
+                <div class="medication-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong><i class="fa fa-medkit"></i> Medication:</strong> Metformin 850mg<br>
+                            <strong>Code:</strong> MET850<br>
+                            <strong>Quantity:</strong> 60 units
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Unit Price:</strong> R4.20<br>
+                            <strong>Total:</strong> R252.00
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Batch:</strong> BAT003<br>
+                            <strong>Expiry:</strong> 08/10/2025<br>
+                            <strong>Notes:</strong> Take twice daily
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a class="btn btn-info" asp-action="Edit" asp-route-id="3">
+                        <i class="fa fa-edit"></i> Edit Details
+                    </a>
+                    <button class="btn btn-warning" onclick="viewDetails(3)">
+                        <i class="fa fa-eye"></i> View Full Details
+                    </button>
+                    <button class="btn btn-secondary" onclick="printLabel(3)">
+                        <i class="fa fa-print"></i> Print Label
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mock Order 4 - Pending -->
+            <div class="order-card priority-high">
+                <div class="order-header">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h6><i class="fa fa-file-text-o"></i> Order #PRC004</h6>
+                            <small>Submitted: 23/07/2025 13:20</small>
+                        </div>
+                        <div class="col-md-4 text-right">
+                            <span class="status-badge status-pending">
+                                Pending
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Patient Information -->
+                <div class="patient-info">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-user"></i> Patient:</strong> Emma Thompson<br>
+                            <strong>ID:</strong> 8901234567812
+                        </div>
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-user-md"></i> Doctor:</strong> Dr. James Davis<br>
+                            <strong>Contact:</strong> Available on request
+                        </div>
+                        <div class="col-md-4">
+                            <strong><i class="fa fa-clock-o"></i> Submitted:</strong> 23/07/2025<br>
+                            <strong>Priority:</strong>
+                            <span class="text-danger">Today</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medication Details -->
+                <div class="medication-item">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong><i class="fa fa-medkit"></i> Medication:</strong> Atorvastatin 20mg<br>
+                            <strong>Code:</strong> ATO020<br>
+                            <strong>Quantity:</strong> 28 units
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Unit Price:</strong> R12.30<br>
+                            <strong>Total:</strong> R344.40
+                        </div>
+                        <div class="col-md-3">
+                            <strong>Batch:</strong> BAT004<br>
+                            <strong>Expiry:</strong> 30/01/2026<br>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-success" onclick="startProcessing(4)">
+                        <i class="fa fa-play"></i> Start Processing
+                    </button>
+                    <a class="btn btn-info" asp-action="Edit" asp-route-id="4">
+                        <i class="fa fa-edit"></i> Edit Details
+                    </a>
+                    <button class="btn btn-warning" onclick="viewDetails(4)">
+                        <i class="fa fa-eye"></i> View Full Details
+                    </button>
+                    <button class="btn btn-secondary" onclick="printLabel(4)">
+                        <i class="fa fa-print"></i> Print Label
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Filter orders function
+        function filterOrders() {
+            const status = document.getElementById('statusFilter').value;
+            const patient = document.getElementById('patientSearch').value;
+            const date = document.getElementById('dateFilter').value;
+
+            // You can implement AJAX call here to filter orders
+            // For now, just show alert
+            alert('Filter functionality can be implemented with AJAX calls to your controller');
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('patientSearch').value = '';
+            document.getElementById('dateFilter').value = '';
+        }
+
+        // Start processing order
+        function startProcessing(dispenseId) {
+            if (confirm('Start processing this order?')) {
+                // AJAX call to update status
+                fetch('@Url.Action("UpdateStatus", "DispenseMedication")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({
+                        dispenseId: dispenseId,
+                        status: 'Processing'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error updating status');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating status');
+                });
+            }
+        }
+
+        // Mark order as ready
+        function markReady(dispenseId) {
+            if (confirm('Mark this order as ready for collection?')) {
+                // Similar AJAX call for marking ready
+                fetch('@Url.Action("UpdateStatus", "DispenseMedication")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('[name="__RequestVerificationToken"]').value
+                    },
+                    body: JSON.stringify({
+                        dispenseId: dispenseId,
+                        status: 'Ready'
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error updating status');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error updating status');
+                });
+            }
+        }
+
+        // View details
+        function viewDetails(dispenseId) {
+            window.location.href = '@Url.Action("Details", "DispenseMedication")/' + dispenseId;
+        }
+
+        // Print label
+        function printLabel(dispenseId) {
+            window.open('@Url.Action("PrintLabel", "DispenseMedication")/' + dispenseId, '_blank');
+        }
+    </script>
+
+    <!-- W3.CSS Sidebar Scripts -->
+    <script>
+        function w3_open() {
+            document.getElementById("main").style.marginLeft = "25%";
+            document.getElementById("mySidebar").style.width = "25%";
+            document.getElementById("mySidebar").style.display = "block";
+            document.getElementById("openNav").style.display = 'none';
+        }
+
+        function w3_close() {
+            document.getElementById("main").style.marginLeft = "0%";
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        function myAccFunc() {
+            var x = document.getElementById("demoAcc");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-green";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className = x.previousElementSibling.className.replace(" w3-green", "");
+            }
+        }
+
+        function myAccFunc1() {
+            var x = document.getElementById("demoAcc1");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-green";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className = x.previousElementSibling.className.replace(" w3-green", "");
+            }
+        }
+    </script>
+</body>

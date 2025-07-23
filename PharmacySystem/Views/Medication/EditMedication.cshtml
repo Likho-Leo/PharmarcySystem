@@ -1,0 +1,209 @@
+﻿@{
+    ViewData["Title"] = "EditMedication";
+
+    var MedicationID = 1;
+    var MedicationName = "Allergex";
+    var CurrentPrice = 105;
+    var ReOrderLevel = 100;
+    var QtyOnHand = 200;
+    var Strength = 30;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<body>
+    <!-- Sidebar -->
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyManager" asp-action="Home"><i class="fa fa-home"></i> Home</a>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyDetails" asp-action="DisplayAllPharmacyDetail"><i class="fa fa-hospital-o"></i> Pharmacy Details</a>
+        <a class="w3-bar-item w3-button" asp-controller="User" asp-action="DisplayAllUser"><i class="fa fa-users"></i> Employees</a>
+        <a class="w3-bar-item w3-button" asp-controller="Doctor" asp-action="DisplayAllDoctor"><i class="fa fa-user-md"></i> Doctors</a>
+        <a class="w3-bar-item w3-button" asp-controller="Supplier" asp-action="DisplayAllSupplier"><i class="fa fa-truck"></i> Suppliers</a>
+        <a class="w3-bar-item w3-button" asp-controller="ActiveIngredient" asp-action="DisplayAllActiveIngredient"><i class="fa fa-leaf"></i> Active Ingredients</a>
+        <a class="w3-bar-item w3-button" asp-controller="Dosage" asp-action="DisplayAllDosage"><i class="fa fa-medkit"></i> Dosage</a>
+        <a class="w3-bar-item w3-button" asp-controller="Schedule" asp-action="DisplayAllSchedule"><i class="fa fa-calendar"></i> Schedules</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="DisplayAllMedication"><i class="fa fa-pills"></i> Medications</a>
+        <a class="w3-bar-item w3-button" asp-controller="OrderStock" asp-action="DisplayAllOrderStock"><i class="fa fa-cubes"></i> Stock</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="PrintStockReport"><i class="fa fa-print"></i> Print Report</a>
+    </div>
+
+    <div id="main">
+        <div class="w3-teal">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+            <div class="w3-container">
+                <h3 class="display-4">MANAGE MEDICATION</h3>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="mb-3 text-center">EDIT MEDICATION</h4>
+                <p class="text-muted text-center">Update medication details in the system.</p>
+
+                <form asp-action="EditMedication" method="post">
+                    <input type="hidden" name="MedicationID" value="@MedicationID" />
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Medication Name <span class="text-danger">*</span></label>
+                            <input name="MedicationName" type="text" class="form-control" value="@MedicationName" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Current Price (R) <span class="text-danger">*</span></label>
+                            <input name="CurrentPrice" type="number" class="form-control" value="@CurrentPrice" required />
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">ReOrder Level <span class="text-danger">*</span></label>
+                            <input name="ReOrderLevel" type="number" class="form-control" value="@ReOrderLevel" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Qty On Hand <span class="text-danger">*</span></label>
+                            <input name="QtyOnHand" type="number" class="form-control" value="@QtyOnHand" required />
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Supplier <span class="text-danger">*</span></label>
+                            <select name="Supplier" class="form-control" required>
+                                <option value="">-- Select Supplier --</option>
+                                <option value="Lindo Medical Supplier" selected>Lindo Medical Supplier</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Dosage <span class="text-danger">*</span></label>
+                            <select name="Dosage" class="form-control" required>
+                                <option value="">-- Select Dosage --</option>
+                                <option value="Tablet" selected>Tablet</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="ingredient-container">
+                        <div class="row mb-3 ingredient-row">
+                            <div class="col-md-6">
+                                <label class="form-label">Active Ingredient <span class="text-danger">*</span></label>
+                                <select name="ActiveIngredient" class="form-control" required>
+                                    <option value="">-- Select Ingredient --</option>
+                                    <option value="Paracetamol" selected>Paracetamol</option>
+                                    <option value="Ibuprofen">Ibuprofen</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Strength (g) <span class="text-danger">*</span></label>
+                                <input name="Strength" type="number" class="form-control" value="@Strength" required />
+                            </div>
+                            <div class="col-md-2 align-self-end">
+                                <button type="button" class="btn btn-success" onclick="AddIngredientRow(this)">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Schedule <span class="text-danger">*</span></label>
+                            <select name="Schedule" class="form-control" required>
+                                <option value="">-- Select Schedule --</option>
+                                <option value="Schedule 1" selected>Schedule 1</option>
+                                <option value="Schedule 2">Schedule 2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    @if (TempData["msg"] != null)
+                    {
+                        <div id="notification" class="mb-3 alert alert-info">
+                            @TempData["msg"]
+                        </div>
+                    }
+
+                    <div class="d-flex align-items-center mt-3">
+                        <button type="submit" class="btn btn-success me-3">
+                            <i class="fa fa-save"></i> Save
+                        </button>
+                        <a asp-controller="Medication" asp-action="DisplayAllMedication" class="btn btn-primary">
+                            <i class="fa fa-list"></i> Display Records
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function w3_open() {
+            document.getElementById("main").style.marginLeft = "25%";
+            document.getElementById("mySidebar").style.width = "25%";
+            document.getElementById("mySidebar").style.display = "block";
+            document.getElementById("openNav").style.display = "none";
+        }
+
+        function w3_close() {
+            document.getElementById("main").style.marginLeft = "0%";
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        function AddIngredientRow(button) {
+            const container = $('#ingredient-container');
+            const currentRow = $(button).closest('.ingredient-row');
+            const newRow = currentRow.clone();
+
+            newRow.find('select').val('');
+            newRow.find('input').val('');
+
+            newRow.find('button')
+                .removeClass('btn-danger')
+                .addClass('btn-success')
+                .text('+')
+                .attr('onclick', 'AddIngredientRow(this)');
+
+            container.append(newRow);
+
+            $(button)
+                .removeClass('btn-success')
+                .addClass('btn-danger')
+                .text('-')
+                .attr('onclick', 'RemoveIngredientRow(this)');
+        }
+
+        function RemoveIngredientRow(button) {
+            $(button).closest('.ingredient-row').remove();
+        }
+
+        $(document).ready(function () {
+            if ($('#notification').text().trim() !== '') {
+                $('#notification').fadeIn().delay(3000).fadeOut();
+            }
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .w3-sidebar a:hover {
+            background-color: #ccc !important;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+        }
+
+        form .form-label {
+            font-weight: 500;
+        }
+
+        form .btn i {
+            margin-right: 5px;
+        }
+    </style>
+</body>

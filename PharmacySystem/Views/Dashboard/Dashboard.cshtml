@@ -1,0 +1,336 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="~/css/pharmacy-theme.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    .row {
+        margin: 0 -10px;
+    }
+
+    .col-md-6, .col-lg-3, .col-md-4 {
+        padding: 0 10px;
+        margin-bottom: 20px;
+    }
+
+    .stat-card {
+        background: linear-gradient(135deg, var(--white) 0%, var(--honeydew) 100%);
+        border: 2px solid var(--primary-yellow-green);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--golden-yellow);
+        }
+
+        .stat-card .icon {
+            font-size: 2.5rem;
+            color: var(--primary-yellow-green);
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h3 {
+            color: var(--forest-green);
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+
+        .stat-card p {
+            color: var(--medium-gray);
+            font-weight: 500;
+            margin: 0;
+        }
+
+    /* =================================
+       QUICK ACTIONS SECTION
+       ================================= */
+
+    .quick-actions {
+        margin: 2rem 0;
+        padding: 0 10px;
+    }
+
+        .quick-actions h4 {
+            color: var(--forest-green);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+    .action-card {
+        background: linear-gradient(135deg, var(--white) 0%, var(--mint-cream) 100%);
+        border: 2px solid var(--secondary-yellow-green);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: var(--shadow-md);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-yellow-green);
+        }
+
+        .action-card .icon {
+            font-size: 2rem;
+            color: var(--tertiary-yellow-green);
+            margin-bottom: 1rem;
+        }
+
+        .action-card h4 {
+            color: var(--forest-green);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .action-card p {
+            color: var(--medium-gray);
+            margin-bottom: 1.5rem;
+        }
+
+    /* =================================
+       ALERT SECTIONS
+       ================================= */
+
+    .alert-section {
+        margin: 2rem 0;
+        padding: 0 10px;
+    }
+
+        .alert-section h4 {
+            color: var(--forest-green);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+    .alert-item {
+        background: linear-gradient(135deg, var(--honeydew) 0%, var(--white) 100%);
+        border: 2px solid var(--olive-green);
+        border-left: 6px solid var(--olive-green);
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: var(--shadow-sm);
+    }
+
+        .alert-item.critical {
+            border-color: var(--danger);
+            border-left-color: var(--danger);
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.05) 0%, var(--white) 100%);
+        }
+
+        .alert-item.warning {
+            border-color: var(--golden-yellow);
+            border-left-color: var(--golden-yellow);
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, var(--white) 100%);
+        }
+
+        .alert-item strong {
+            color: var(--forest-green);
+        }
+</style>
+<body>
+
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large"
+                onclick="w3_close()">
+            Close &times;
+        </button>
+       
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Dashboard" asp-action="Dashboard">Home</a>
+       
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+            Upload Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="Prescriptions">Upload Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="DisplayAllPrescriptions">All Prescriptions</a>
+        </div>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc1()">
+            Dispense Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc1" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="FulfillOrders">Dispense Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DispensePrescription">Proccess Orders</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DisplayHistory">Dispense Prescriptions</a>
+            
+        </div>
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="PharmacistReport" asp-action="PharmacistReport">Go To Reports</a>
+      
+    </div>
+
+    <div id="main">
+
+        <div class="w3-teal">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+            <div class="w3-container">
+                <h2 class="text-center">Pharmacist Dashboard</h2>
+            </div>
+        </div>
+    </div>
+
+<!-- Stats Row -->
+<div class="row">
+    <div class="col-md-6 col-lg-3">
+        <div class="stat-card">
+            <div class="icon">
+                <i class="fas fa-clipboard-check"></i>
+            </div>
+            <h3>24</h3>
+            <p>Pending Prescriptions</p>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="stat-card">
+            <div class="icon">
+                <i class="fas fa-pills"></i>
+            </div>
+            <h3>89</h3>
+            <p>Medications Dispensed Today</p>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="stat-card">
+            <div class="icon">
+                <i class="fas fa-user-injured"></i>
+            </div>
+            <h3>37</h3>
+            <p>Patients Served Today</p>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="stat-card">
+            <div class="icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3>5</h3>
+            <p>Inventory Alerts</p>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="quick-actions">
+    <h4 class="mb-3">Quick Actions</h4>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="action-card">
+                <div class="icon">
+                    <i class="fas fa-prescription"></i>
+                </div>
+                <h4>Load Prescription</h4>
+                <p>Enter new prescription details for patients</p>
+                <a asp-controller="Prescriptions" asp-action="Prescriptions" class="btn">Get Started</a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="action-card">
+                <div class="icon">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <h4>Dispense Medication</h4>
+                <p>Process and dispense pending prescriptions</p>
+                <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="FulfillOrders">Dispense Prescriptions</a>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="action-card">
+                <div class="icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h4>Generate Report</h4>
+                <p>Create and export pharmacy reports</p>
+                    <a asp-controller="PharmacistReport" asp-action="PharmacistReport" class="btn">Get Started</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alerts Section -->
+<div class="alert-section">
+    <h4 class="mb-3">Important Alerts</h4>
+    <div class="alert-item critical">
+        <div>
+            <strong>Low Stock Alert:</strong> Amoxicillin 500mg - Only 10 units remaining
+        </div>
+        <button class="btn btn-sm btn-outline-primary">Reorder</button>
+    </div>
+    <div class="alert-item warning">
+        <div>
+            <strong>Expiring Soon:</strong> Insulin Glargine - 5 units expire in 30 days
+        </div>
+        <button class="btn btn-sm btn-outline-primary">View Details</button>
+    </div>
+    <div class="alert-item">
+        <div>
+            <strong>New Guidelines:</strong> Updated protocol for opioid prescriptions
+        </div>
+        <button class="btn btn-sm btn-outline-primary">Review</button>
+    </div>
+</div>
+
+        <script>
+            function w3_open() {
+              document.getElementById("main").style.marginLeft = "25%";
+              document.getElementById("mySidebar").style.width = "25%";
+              document.getElementById("mySidebar").style.display = "block";
+              document.getElementById("openNav").style.display = 'none';
+            }
+            function w3_close() {
+              document.getElementById("main").style.marginLeft = "0%";
+              document.getElementById("mySidebar").style.display = "none";
+              document.getElementById("openNav").style.display = "inline-block";
+            }
+
+            function myAccFunc() {
+              var x = document.getElementById("demoAcc");
+              if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-green";
+              } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                x.previousElementSibling.className.replace(" w3-green", "");
+              }
+            }
+
+            function myAccFunc1() {
+              var x = document.getElementById("demoAcc1");
+              if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-green";
+              } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                x.previousElementSibling.className.replace(" w3-green", "");
+              }
+            }
+
+            function myDropFunc() {
+              var x = document.getElementById("demoDrop");
+              if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+                x.previousElementSibling.className += " w3-green";
+              } else {
+                x.className = x.className.replace(" w3-show", "");
+                x.previousElementSibling.className =
+                x.previousElementSibling.className.replace(" w3-green", "");
+              }
+            }
+        </script>
+</body>

@@ -1,0 +1,133 @@
+﻿@{
+    ViewData["Title"] = "Order Details";
+    var orderId = ViewBag.OrderID;
+
+    var medsInOrder = new List<dynamic>
+    {
+        new { Medication = "Allergex", Quantity = 100, UnitPrice = 15.00, Status = "Pending" },
+        new { Medication = "Panado", Quantity = 200, UnitPrice = 10.00, Status = "Delivered" }
+    };
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<body>
+    <!-- Sidebar -->
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyManager" asp-action="Home"><i class="fa fa-home"></i> Home</a>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyDetails" asp-action="DisplayAllPharmacyDetail"><i class="fa fa-hospital-o"></i> Pharmacy Details</a>
+        <a class="w3-bar-item w3-button" asp-controller="User" asp-action="DisplayAllUser"><i class="fa fa-users"></i> Employees</a>
+        <a class="w3-bar-item w3-button" asp-controller="Doctor" asp-action="DisplayAllDoctor"><i class="fa fa-user-md"></i> Doctors</a>
+        <a class="w3-bar-item w3-button" asp-controller="Supplier" asp-action="DisplayAllSupplier"><i class="fa fa-truck"></i> Suppliers</a>
+        <a class="w3-bar-item w3-button" asp-controller="ActiveIngredient" asp-action="DisplayAllActiveIngredient"><i class="fa fa-leaf"></i> Active Ingredients</a>
+        <a class="w3-bar-item w3-button" asp-controller="Dosage" asp-action="DisplayAllDosage"><i class="fa fa-medkit"></i> Dosage</a>
+        <a class="w3-bar-item w3-button" asp-controller="Schedule" asp-action="DisplayAllSchedule"><i class="fa fa-calendar"></i> Schedules</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="DisplayAllMedication"><i class="fa fa-pills"></i> Medications</a>
+        <a class="w3-bar-item w3-button" asp-controller="OrderStock" asp-action="DisplayAllOrderStock"><i class="fa fa-cubes"></i> Stock</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="PrintStockReport"><i class="fa fa-print"></i> Print Report</a>
+    </div>
+
+    <!-- Main content -->
+    <div id="main">
+        <div class="w3-teal p-3 d-flex align-items-center">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge me-3" onclick="w3_open()">&#9776;</button>
+            <h3 class="m-0">ORDER DETAILS</h3>
+        </div>
+
+        <div class="container mt-5">
+            <div class="bg-white p-4 rounded shadow-sm">
+                <p>Order ID: <strong>@orderId</strong></p>
+
+                <form method="post" asp-controller="OrderStock" asp-action="UpdateMedicationStatus">
+                    <input type="hidden" name="OrderID" value="@orderId" />
+
+                    <table class="table table-bordered table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Medication</th>
+                                <th>Quantity</th>
+                                <th>Unit Price</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-light">
+                            @for (int i = 0; i < medsInOrder.Count; i++)
+                            {
+                                var med = medsInOrder[i];
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="MedicationNames" value="@med.Medication" />
+                                        @med.Medication
+                                    </td>
+                                    <td>@med.Quantity</td>
+                                    <td>R@(@med.UnitPrice)</td>
+                                    <td>R@(med.Quantity * med.UnitPrice)</td>
+                                    <td>
+                                        <select name="MedicationStatuses" class="form-select form-select-sm">
+                                            <option value="Pending" selected="@(med.Status == "Pending")">Pending</option>
+                                            <option value="Delivered" selected="@(med.Status == "Delivered")">Delivered</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <button type="submit" class="btn btn-success">
+                        <i class="fa fa-check"></i> Update Medication Statuses
+                    </button>
+                </form>
+
+                <a asp-controller="OrderStock" asp-action="ViewPlacedOrders" class="btn btn-secondary mt-3">
+                    <i class="fa fa-arrow-left"></i> Back to Orders
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function w3_open() {
+            document.getElementById("main").style.marginLeft = "25%";
+            document.getElementById("mySidebar").style.width = "25%";
+            document.getElementById("mySidebar").style.display = "block";
+            document.getElementById("openNav").style.display = "none";
+        }
+
+        function w3_close() {
+            document.getElementById("main").style.marginLeft = "0%";
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("openNav").style.display = "inline-block";
+        }
+    </script>
+
+    <!-- Styles -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .w3-sidebar a:hover {
+            background-color: #ccc !important;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn i {
+            margin-right: 5px;
+        }
+    </style>
+</body>
+

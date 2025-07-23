@@ -1,0 +1,89 @@
+﻿@{
+    ViewData["Title"] = "Customer Home Page";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+
+    <!-- Sidebar: always visible -->
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="width: 250px; z-index:0">
+        <h3 class="w3-bar-item">Menu</h3>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="LoadPrescription">Upload Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="ProcessedScript">Processed Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="UnprocessedScript">Unprocessed Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Order" asp-action="Order">Order</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="GenerateReport" asp-action="GenerateReport">Generate Report</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Account" asp-action="Account">Account</a>
+    </div>
+
+
+    <!-- Main content: shifted right to make space for sidebar -->
+    <div id="main" style="margin-left: 250px;">
+
+        <!-- Header: remove openNav button -->
+        <div class="w3-teal">
+            <div class="w3-container" style="display: flex; align-items: center; gap: 16px; padding:20px">
+                <!-- Removed the sidebar toggle button -->
+                <h1 class="display-4" style="margin: 0;">HOME</h1>
+            </div>
+        </div>
+
+
+        <div class="w3-container">
+            <h1 class="display-4">Welcome Mr. Leohla</h1>
+            <hr style="border: 1px solid white; width: 100%; text-align: center;" />
+            <p class="lead">Ibhayi Pharmacy Systems</p>
+            <p>
+                Welcome to the Ibhayi Pharmacy Systems customer home page.
+            </p>
+            <p>Navigate through the options on the side to access the features and services.</p>
+        </div>
+    </div>
+
+    <script>
+        function w3_open() {
+          document.getElementById("main").style.marginLeft = "25%";
+          document.getElementById("mySidebar").style.width = "25%";
+          document.getElementById("mySidebar").style.display = "block";
+          document.getElementById("openNav").style.display = 'none';
+        }
+        function w3_close() {
+          document.getElementById("main").style.marginLeft = "0%";
+          document.getElementById("mySidebar").style.display = "none";
+          document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        function myAccFunc() {
+          var x = document.getElementById("demoAcc");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myDropFunc() {
+          var x = document.getElementById("demoDrop");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+    </script>
+</body>
+

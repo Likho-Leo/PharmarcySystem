@@ -1,0 +1,209 @@
+﻿@{
+    ViewData["Title"] = "OrderMedication";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<body>
+    <!-- Sidebar -->
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyManager" asp-action="Home"><i class="fa fa-home"></i> Home</a>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyDetails" asp-action="DisplayAllPharmacyDetail"><i class="fa fa-hospital-o"></i> Pharmacy Details</a>
+        <a class="w3-bar-item w3-button" asp-controller="User" asp-action="DisplayAllUser"><i class="fa fa-users"></i> Employees</a>
+        <a class="w3-bar-item w3-button" asp-controller="Doctor" asp-action="DisplayAllDoctor"><i class="fa fa-user-md"></i> Doctors</a>
+        <a class="w3-bar-item w3-button" asp-controller="Supplier" asp-action="DisplayAllSupplier"><i class="fa fa-truck"></i> Suppliers</a>
+        <a class="w3-bar-item w3-button" asp-controller="ActiveIngredient" asp-action="DisplayAllActiveIngredient"><i class="fa fa-leaf"></i> Active Ingredients</a>
+        <a class="w3-bar-item w3-button" asp-controller="Dosage" asp-action="DisplayAllDosage"><i class="fa fa-medkit"></i> Dosage</a>
+        <a class="w3-bar-item w3-button" asp-controller="Schedule" asp-action="DisplayAllSchedule"><i class="fa fa-calendar"></i> Schedules</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="DisplayAllMedication"><i class="fa fa-pills"></i> Medications</a>
+        <a class="w3-bar-item w3-button" asp-controller="OrderStock" asp-action="DisplayAllOrderStock"><i class="fa fa-cubes"></i> Stock</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="PrintStockReport"><i class="fa fa-print"></i> Print Report</a>
+    </div>
+
+    <div id="main">
+        <div class="w3-teal p-3 d-flex align-items-center">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge me-3" onclick="w3_open()">&#9776;</button>
+            <h3 class="m-0">ORDER MEDICATION</h3>
+        </div>
+
+        <div class="container mt-5">
+            <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="mb-3 text-dark">Medication Inventory</h4>
+                <p class="text-muted mb-4">Welcome to the Medication Ordering section of our Pharmacy System.</p>
+
+                @{
+                    var medications = new List<dynamic>
+                {
+                new { MedicationID = 1, Medication = "Allergex", Supplier = "Lindo Medical", ReOrderLevel = 100, QtyOnHand = 50 },
+                new { MedicationID = 2, Medication = "Panado", Supplier = "MediSource", ReOrderLevel = 200, QtyOnHand = 180 },
+                new { MedicationID = 3, Medication = "Strepsils", Supplier = "PharmaZone", ReOrderLevel = 150, QtyOnHand = 70 },
+                new { MedicationID = 4, Medication = "Disprin", Supplier = "HealthPro", ReOrderLevel = 100, QtyOnHand = 120 }
+                };
+                }
+
+                <form id="selectMedicationForm">
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                            <tr>
+                                <th><input type="checkbox" id="selectAll" /></th>
+                                <th>Medication</th>
+                                <th>Supplier</th>
+                                <th>ReOrder Level</th>
+                                <th>Qty On Hand</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-light">
+                            @foreach (var med in medications)
+                            {
+                                var isLowStock = med.QtyOnHand < med.ReOrderLevel;
+                                var qtyClass = isLowStock ? "low-stock" : "sufficient-stock";
+
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" class="med-check" name="selectedMeds" value="@med.MedicationID"
+                                               data-med='@System.Text.Json.JsonSerializer.Serialize(med)' />
+                                    </td>
+                                    <td>@med.Medication</td>
+                                    <td>@med.Supplier</td>
+                                    <td>@med.ReOrderLevel</td>
+                                    <td class="@qtyClass">@med.QtyOnHand</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="mt-3 d-flex">
+                        <button type="button" id="placeOrderBtn" class="btn btn-primary">Place Order</button>
+                        <a asp-controller="OrderStock" asp-action="ViewPlacedOrders" class="btn btn-secondary ms-2">View Placed Orders</a>
+                    </div>
+                </form>
+
+                <div class="mt-4">
+                    <strong>Legend:</strong>
+                    <div><span class="badge bg-danger">Red Cell</span> — Low Stock (QtyOnHand &lt; ReOrderLevel)</div>
+                    <div><span class="badge bg-success">Green Cell</span> — Sufficient Stock</div>
+                </div>
+
+                <!-- Order Form -->
+                <div id="orderFormContainer" style="display: none;" class="mt-4">
+                    <h5>Selected Medications to Order</h5>
+                    <form method="post" asp-controller="OrderStock" asp-action="ConfirmOrder">
+                        <div class="mb-3">
+                            <label for="orderDate">Order Date:</label>
+                            <input type="date" name="OrderDate" class="form-control" required value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        </div>
+
+                        <table class="table table-bordered">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Medication</th>
+                                    <th>Supplier</th>
+                                    <th>Order Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody id="selectedMedsTable" class="table-light">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+
+                        <button type="submit" class="btn btn-success">Submit Order</button>
+                    </form>
+                </div>
+
+                @if (TempData["msg"] != null)
+                {
+                    <div id="notification" class="alert alert-info mt-3">
+                        @TempData["msg"]
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function w3_open() {
+            document.getElementById("main").style.marginLeft = "25%";
+            document.getElementById("mySidebar").style.width = "25%";
+            document.getElementById("mySidebar").style.display = "block";
+            document.getElementById("openNav").style.display = "none";
+        }
+
+        function w3_close() {
+            document.getElementById("main").style.marginLeft = "0%";
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        $(document).ready(function () {
+            $('#selectAll').on('change', function () {
+                $('.med-check').prop('checked', this.checked);
+            });
+
+            $('#placeOrderBtn').on('click', function () {
+                const selected = $('.med-check:checked');
+                if (selected.length === 0) {
+                    alert('Please select at least one medication.');
+                    return;
+                }
+
+                let rowsHtml = '';
+                selected.each(function () {
+                    const medData = JSON.parse($(this).attr('data-med'));
+                    rowsHtml += `
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="MedicationIDs" value="${medData.MedicationID}" />
+                                        ${medData.Medication}
+                                    </td>
+                                    <td>${medData.Supplier}</td>
+                                    <td>
+                                        <input type="number" name="OrderQuantities" class="form-control" min="1" required />
+                                    </td>
+                                </tr>`;
+                });
+
+                $('#selectedMedsTable').html(rowsHtml);
+                $('#orderFormContainer').slideDown();
+            });
+
+            if ($('#notification').text().trim() !== '') {
+                $('#notification').fadeIn().delay(3000).fadeOut();
+            }
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .w3-sidebar a:hover {
+            background-color: #ccc !important;
+        }
+
+        .low-stock {
+            background-color: #f8d7da !important;
+            color: #842029;
+            font-weight: bold;
+        }
+
+        .sufficient-stock {
+            background-color: #d4edda !important;
+            color: #155724;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+        }
+
+        .btn i {
+            margin-right: 5px;
+        }
+    </style>
+</body>

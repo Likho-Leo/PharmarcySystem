@@ -1,0 +1,115 @@
+﻿@{
+    ViewData["Title"] = "Manager Home Page";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large"
+                onclick="w3_close()">
+            Close &times;
+        </button>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyManager" asp-action="Home"><i class="fa fa-home"></i>Home</a>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyDetails" asp-action="DisplayAllPharmacyDetail"><i class="fa fa-hospital-o"></i> Pharmacy Details</a>
+        <a class="w3-bar-item w3-button" asp-controller="User" asp-action="DisplayAllUser"><i class="fa fa-users"></i> Employees</a>
+        <a class="w3-bar-item w3-button" asp-controller="Doctor" asp-action="DisplayAllDoctor"><i class="fa fa-user-md"></i> Doctors</a>
+        <a class="w3-bar-item w3-button" asp-controller="Supplier" asp-action="DisplayAllSupplier"><i class="fa fa-truck"></i> Suppliers</a>
+        <a class="w3-bar-item w3-button" asp-controller="ActiveIngredient" asp-action="DisplayAllActiveIngredient"><i class="fa fa-leaf"></i> Active Ingredients</a>
+        <a class="w3-bar-item w3-button" asp-controller="Dosage" asp-action="DisplayAllDosage"><i class="fa fa-medkit"></i> Dosage</a>
+        <a class="w3-bar-item w3-button" asp-controller="Schedule" asp-action="DisplayAllSchedule"><i class="fa fa-calendar"></i> Schedules</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="DisplayAllMedication"><i class="fa fa-pills"></i> Medications</a>
+        <a class="w3-bar-item w3-button" asp-controller="OrderStock" asp-action="DisplayAllOrderStock"><i class="fa fa-cubes"></i> Stock</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="PrintStockReport"><i class="fa fa-print"></i> Print Report</a>
+    </div>
+    
+
+    <div id="main">
+
+        <div class="w3-teal">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+            <div class="w3-container">
+                <h2>Welcome, Lindokuhle.</h2>
+            </div>
+        </div>
+
+        <!-- Welcome Section -->
+        <div class="container mt-5">
+            <div class="bg-white p-4 rounded shadow-sm text-center">
+                <h1 class="display-4">Ibhayi Pharmacy Manager Dashboard</h1>
+                <hr />
+                <p class="lead">Welcome to the Ibhayi Pharmacy System.</p>
+                <p>Use the menu to the left to manage your pharmacy’s operations effectively and efficiently.</p>
+
+                <!-- Statistics Section -->
+                <div class="w3-row-padding w3-margin-top text-center">
+                    <div class="w3-third">
+                        <div class="w3-container w3-padding w3-card w3-light-grey">
+                            <i class="fa fa-users w3-xxlarge"></i>
+                            <h4>Employees</h4>
+                            <p>24 active staff members</p>
+                        </div>
+                    </div>
+                    <div class="w3-third">
+                        <div class="w3-container w3-padding w3-card w3-light-grey">
+                            <i class="fa fa-pills w3-xxlarge"></i>
+                            <h4>Medications</h4>
+                            <p>180+ medications in stock</p>
+                        </div>
+                    </div>
+                    <div class="w3-third">
+                        <div class="w3-container w3-padding w3-card w3-light-grey">
+                            <i class="fa fa-cubes w3-xxlarge"></i>
+                            <h4>Stock Orders</h4>
+                            <p>47 stock orders processed</p>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function w3_open() {
+          document.getElementById("main").style.marginLeft = "25%";
+          document.getElementById("mySidebar").style.width = "25%";
+          document.getElementById("mySidebar").style.display = "block";
+          document.getElementById("openNav").style.display = 'none';
+        }
+        function w3_close() {
+          document.getElementById("main").style.marginLeft = "0%";
+          document.getElementById("mySidebar").style.display = "none";
+          document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        function myAccFunc() {
+          var x = document.getElementById("demoAcc");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myDropFunc() {
+          var x = document.getElementById("demoDrop");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+    </script>
+</body>
+

@@ -1,0 +1,107 @@
+﻿@{
+    ViewData["Title"] = "EditOrderStock";
+
+    var OrderStockID = 1;
+    var OrderDate = "2025-02-02";
+    var QtyOrdered = 200;
+    var OrderStatus = "Processed";
+    var DeliverDate = "2025-02-20";
+}
+
+<div class="wide-dark-box">
+    <h2 class="text-center">UPDATE ORDER STOCK</h2>
+    <br />
+    <p>
+        Welcome to the Manage Order Stock section of our Ward Pharmacy System.
+    </p>
+
+    <form asp-action="EditOrderStock" method="post">
+        <input type="hidden" name="OrderStockID" value="@OrderStockID" />
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="Medication" class="form-label">Medication Name<span style="color: red;">*</span></label>
+                <select for="Medication" class="form-control">
+                    <option value="MedicationID">allergex</option>
+                    <option value="allergex"></option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="QtyOrdered" class="form-label">Qty Ordered<span style="color: red;">*</span></label>
+                <input for="QtyOrdered" type="number" class="form-control" value="@QtyOrdered">
+            </div>
+
+            <div class="col-md-1 align-self-end">
+                <button type="button" class="btn btn-success" onclick="AddMedicationRow()">+</button>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="Supplier" class="form-label">Supplier<span style="color: red;">*</span></label>
+                <select for="Supplier" class="form-control">
+                    <option value="SupplierID">Lindo Medical Supplier</option>
+                    <option value="Lindo Medical Supplier"></option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label for="OrderStatus" class="form-label">Order Status<span style="color: red;">*</span></label>
+                <select for="OrderStatus" class="form-control">
+                    <option value="OrderStatus">Processed</option>
+                    <option value="Delivered">Delivered</option>
+                    <!-- Add more options as needed -->
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="OrderDate" class="form-label">Order Date<span style="color: red;">*</span></label>
+                <input for="OrderDate" type="date" class="form-control" value="@OrderDate">
+            </div>
+
+            <div class="col-md-4">
+                <label for="DeliverDate" class="form-label">Deliver Date<span style="color: red;">*</span></label>
+                <input for="DeliverDate" type="date" class="form-control" value="@DeliverDate">
+            </div>
+        </div>
+
+        <br />
+
+        @if (TempData["msg"] != null)
+        {
+            <div id="notification" class="mb-3 alert alert-info">
+                @TempData["msg"]
+            </div>
+        }
+
+        <div class="d-flex justify-content-start align-items-center">
+            <button type="submit" class="btn btn-success">Save</button>
+            <span class="mx-2" style="border-right: 2px solid white; height: 24px;"></span>
+            <a asp-controller="OrderStock" asp-action="DisplayAllOrderStock" class="my-2 btn btn-primary">Display Records</a>
+        </div>
+
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Hide validation messages when user starts typing
+            $('input, textarea').on('input', function () {
+                $(this).siblings('.text-danger').hide();
+            });
+        });
+        $(document).ready(function () {
+            // Show notification if it exists
+            if ($('#notification').text().trim() !== '') {
+                $('#notification').fadeIn().delay(3000).fadeOut(); // Display for 3 seconds
+            }
+        });
+    </script>
+}

@@ -1,0 +1,65 @@
+﻿@model List<dynamic>
+@{
+    ViewData["Title"] = "Report Results";
+}
+<link rel="stylesheet" href="~/css/pharmacy-theme.css" />
+<div class="wide-dark-box text-white">
+    <h2 class="mb-3">Report Results</h2>
+
+    <p><strong>Date Range:</strong> @ViewBag.StartDate to @ViewBag.EndDate</p>
+    <p><strong>Grouped By:</strong> @ViewBag.GroupBy</p>
+
+    @if (Model.Any())
+    {
+        <table class="table table-bordered table-light text-dark mt-4">
+            <thead class="table-dark">
+                <tr>
+                    @if (ViewBag.GroupBy == "Patient")
+                    {
+                        <th>Patient Name</th>
+                        <th>Patient ID</th>
+                        <th>Gender</th>
+                    }
+                    <th>Total Prescriptions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @if (ViewBag.GroupBy == "Patient")
+                        {
+                            <td>@item.Name</td>
+                            <td>@item.PatientId</td>
+                            <td>@item.Gender</td>
+                        }
+                        <td>@item.TotalPrescriptions</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning mt-4">No data found for the selected range/group.</div>
+    }
+
+    <a asp-controller="PharmacistReport" asp-action="PharmacistReport" class="btn btn-secondary mt-3">Back</a>
+</div>
+
+<style>
+    .wide-dark-box {
+        background-color: #222;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
+    table {
+        margin-top: 20px;
+    }
+
+    .table td, .table th {
+        vertical-align: middle;
+    }
+</style>

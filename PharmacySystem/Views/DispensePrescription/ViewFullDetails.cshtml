@@ -1,0 +1,563 @@
+﻿@model dynamic
+
+<style>
+
+    /* Set the container to full-width */
+    .container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        width: 100% !important; /* Make the container 100% width */
+        max-width: 100% !important; /* Remove max-width restriction */
+        padding-left: 0; /* Remove any left padding */
+        padding-right: 0; /* Remove any right padding */
+    }
+    .container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .text-white {
+        --bs-text-opacity: 1;
+        color: #000 !important;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 15px;
+        margin-bottom: 0;
+    }
+
+    .card-body {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        padding: 15px;
+        margin-bottom: 1rem;
+    }
+
+    .order-card {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    .order-header {
+        background: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .patient-info {
+        background: #e9ecef;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .medication-item {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+
+    .status-pending {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .status-processing {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .status-ready {
+        background: #28a745;
+        color: white;
+    }
+
+    .priority-high {
+        border-left: 4px solid #dc3545;
+    }
+
+    .priority-medium {
+        border-left: 4px solid #ffc107;
+    }
+
+    .priority-low {
+        border-left: 4px solid #28a745;
+    }
+
+    .summary-card {
+        text-align: center;
+        padding: 20px;
+        border-radius: 8px;
+        color: white;
+        margin-bottom: 10px;
+    }
+
+        .summary-card.pending {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .summary-card.processing {
+            background: #17a2b8;
+        }
+
+        .summary-card.ready {
+            background: #28a745;
+        }
+
+        .summary-card.total {
+            background: #6c757d;
+        }
+
+        .summary-card h4 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .summary-card p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+
+    .btn {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .action-buttons {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .alert {
+        margin-top: 1rem;
+    }
+</style>
+
+
+<div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+    <button class="w3-bar-item w3-button w3-large"
+            onclick="w3_close()">
+        Close &times;
+    </button>
+
+    <a class="w3-bar-item w3-button" asp-area="" asp-controller="Dashboard" asp-action="Dashboard">Home</a>
+
+    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+        Upload Prescription <i class="fa fa-caret-down"></i>
+    </button>
+    <div id="demoAcc" class="w3-hide w3-white w3-card">
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="Prescriptions">Upload Prescriptions</a>
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="DisplayAllPrescriptions">All Prescriptions</a>
+    </div>
+    <button class="w3-button w3-block w3-left-align" onclick="myAccFunc1()">
+        Dispense Prescription <i class="fa fa-caret-down"></i>
+    </button>
+    <div id="demoAcc1" class="w3-hide w3-white w3-card">
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="FulfillOrders">Dispense Prescriptions</a>
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DispensePrescription">Proccess Orders</a>
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DisplayHistory">Dispense Prescriptions</a>
+
+    </div>
+    <a class="w3-bar-item w3-button" asp-area="" asp-controller="PharmacistReport" asp-action="PharmacistReport">Go To Reports</a>
+
+</div>
+<div id="main">
+    <div class="w3-teal">
+        <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+        <div class="w3-container">
+            <h2 class="heading">Order Details - @Model.OrderId</h2>
+        </div>
+    </div>
+</div>
+
+<div class="container text-white">
+    <!-- Back Button -->
+    <div class="row mb-3">
+        <div class="col-12">
+            <a href="@Url.Action("FulfillOrders")" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"></i> Back to Orders
+            </a>
+        </div>
+    </div>
+
+    <div class="card mb-4" style="background-color: #2c3e50; border: 1px solid #34495e;">
+        <div class="card-header">
+            <h5><i class="fa fa-info-circle"></i> Order Status</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <strong>Order ID:</strong><br>
+                    <span class="h6">@Model.OrderId</span>
+                </div>
+                <div class="col-md-3">
+                    <strong>Status:</strong><br>
+                    <span class="status-badge status-@Model.Status.ToString().ToLower()">
+                        @Model.Status
+                    </span>
+                </div>
+                <div class="col-md-3">
+                    <strong>Priority:</strong><br>
+                    <span class="@Model.PriorityClass">@Model.Priority</span>
+                </div>
+                <div class="col-md-3">
+                    <strong>Submitted:</strong><br>
+                    @Model.SubmittedDate at @Model.SubmittedTime
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Patient Information Card -->
+    <div class="card mb-4" style="background-color: #2c3e50; border: 1px solid #34495e;">
+        <div class="card-header">
+            <h5><i class="fa fa-user"></i> Patient Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Patient Name:</strong><br>
+                    <span class="h6">@Model.Patient.Name</span><br><br>
+
+                    <strong>Patient ID:</strong><br>
+                    <span>@Model.Patient.Id</span><br><br>
+
+                    <strong>Phone:</strong><br>
+                    <span>@Model.Patient.Phone</span>
+                </div>
+                <div class="col-md-6">
+                    <strong>Email:</strong><br>
+                    <span>@Model.Patient.Email</span><br><br>
+
+                    <strong>Address:</strong><br>
+                    <span>@Model.Patient.Address</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Doctor Information Card -->
+    <div class="card mb-4" style="background-color: #2c3e50; border: 1px solid #34495e;">
+        <div class="card-header">
+            <h5><i class="fa fa-user-md"></i> Prescribing Doctor</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Doctor Name:</strong><br>
+                    <span class="h6">@Model.Doctor.Name</span><br><br>
+
+                    <strong>Practice Number:</strong><br>
+                    <span>@Model.Doctor.PracticeNumber</span>
+                </div>
+                <div class="col-md-6">
+                    <strong>Phone:</strong><br>
+                    <span>@Model.Doctor.Phone</span><br><br>
+
+                    <strong>Email:</strong><br>
+                    <span>@Model.Doctor.Email</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prescription Information Card -->
+    <div class="card mb-4" style="background-color: #2c3e50; border: 1px solid #34495e;">
+        <div class="card-header">
+            <h5><i class="fa fa-file-text-o"></i> Prescription Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Prescription Number:</strong><br>
+                    <span class="h6">@Model.Prescription.Number</span><br><br>
+
+                    <strong>Date Issued:</strong><br>
+                    <span>@Model.Prescription.DateIssued</span>
+                </div>
+                <div class="col-md-6">
+                    <strong>Valid Until:</strong><br>
+                    <span>@Model.Prescription.ValidUntil</span><br><br>
+
+                    <strong>Repeats:</strong><br>
+                    <span>@Model.Prescription.Repeats</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medication Details Card -->
+    <div class="card mb-4" style="background-color: #2c3e50; border: 1px solid #34495e;">
+        <div class="card-header">
+            <h5><i class="fa fa-medkit"></i> Medication Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <strong>Medication:</strong><br>
+                    <span class="h6">@Model.Medication.Name</span><br><br>
+
+                    <strong>Code:</strong><br>
+                    <span>@Model.Medication.Code</span><br><br>
+
+                    <strong>Quantity:</strong><br>
+                    <span>@Model.Medication.Quantity units</span>
+                </div>
+                <div class="col-md-4">
+                    <strong>Unit Price:</strong><br>
+                    <span>R@Model.Medication.UnitPrice</span><br><br>
+
+                    <strong>Total Price:</strong><br>
+                    <span class="h6 text-warning">R@Model.Medication.Total</span><br><br>
+
+                    <strong>Batch Number:</strong><br>
+                    <span>@Model.Medication.Batch</span>
+                </div>
+                <div class="col-md-4">
+                    <strong>Expiry Date:</strong><br>
+                    <span>@Model.Medication.Expiry</span><br><br>
+
+                    @if (!string.IsNullOrEmpty(Model.Medication.Notes))
+                    {
+                        <strong>Notes:</strong>
+                    
+                        <br>
+                        <span>@Model.Medication.Notes</span>
+
+                        <br>
+                    
+                        <br>
+                    }
+                </div>
+            </div>
+
+            <hr style="border-color: #34495e;">
+
+            <div class="row">
+                <div class="col-12">
+                    <strong>Instructions:</strong><br>
+                    <div class="alert alert-info" style="background-color: #3498db; border-color: #2980b9; color: white;">
+                        <i class="fa fa-info-circle"></i> @Model.Medication.Instructions
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons Card -->
+    <div class="card mb-4" style="background-color: #2c3e50; border: 1px solid #34495e;">
+        <div class="card-header">
+            <h5><i class="fa fa-cog"></i> Actions</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                    @if (Model.Status == "Pending")
+                    {
+                        <button class="btn btn-success me-2 mb-2" onclick="startProcessing(@Model.Id)">
+                            <i class="fa fa-play"></i> Start Processing
+                        </button>
+                    }
+
+                    @if (Model.Status == "Processing")
+                    {
+                        <button class="btn btn-primary me-2 mb-2" onclick="markReady(@Model.Id)">
+                            <i class="fa fa-check"></i> Mark Ready
+                        </button>
+                    }
+
+                    <a class="btn btn-info me-2 mb-2" href="@Url.Action("Edit", new { id = Model.Id })">
+                        <i class="fa fa-edit"></i> Edit Details
+                    </a>
+
+                    <button class="btn btn-secondary me-2 mb-2" onclick="printLabel(@Model.Id)">
+                        <i class="fa fa-print"></i> Print Label
+                    </button>
+
+                    <button class="btn btn-warning me-2 mb-2" onclick="printPrescription(@Model.Id)">
+                        <i class="fa fa-print"></i> Print Prescription
+                    </button>
+
+                    <button class="btn btn-dark me-2 mb-2" onclick="contactPatient()">
+                        <i class="fa fa-phone"></i> Contact Patient
+                    </button>
+
+                    <button class="btn btn-outline-light me-2 mb-2" onclick="contactDoctor()">
+                        <i class="fa fa-user-md"></i> Contact Doctor
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Start processing order
+    function startProcessing(dispenseId) {
+        if (confirm('Start processing this order?')) {
+            // AJAX call to update status
+            fetch('@Url.Action("UpdateStatus", "DispenseMedication")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({
+                    dispenseId: dispenseId,
+                    status: 'Processing'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error updating status');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // For demo purposes, just reload the page
+                location.reload();
+            });
+        }
+    }
+
+    // Mark order as ready
+    function markReady(dispenseId) {
+        if (confirm('Mark this order as ready for collection?')) {
+            // Similar AJAX call for marking ready
+            fetch('@Url.Action("UpdateStatus", "DispenseMedication")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify({
+                    dispenseId: dispenseId,
+                    status: 'Ready'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error updating status');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // For demo purposes, just reload the page
+                location.reload();
+            });
+        }
+    }
+
+    // Print label
+    function printLabel(dispenseId) {
+        window.open('@Url.Action("PrintLabel", "DispenseMedication")/' + dispenseId, '_blank');
+    }
+
+    // Print prescription
+    function printPrescription(dispenseId) {
+        window.open('@Url.Action("PrintPrescription", "DispenseMedication")/' + dispenseId, '_blank');
+    }
+
+    // Contact patient
+    function contactPatient() {
+        alert('Contact patient functionality would be implemented here.\n\nPatient: @Model.Patient.Name\nPhone: @Model.Patient.Phone\nEmail: @Model.Patient.Email');
+    }
+
+    // Contact doctor
+    function contactDoctor() {
+        alert('Contact doctor functionality would be implemented here.\n\nDoctor: @Model.Doctor.Name\nPhone: @Model.Doctor.Phone\nEmail: @Model.Doctor.Email');
+    }
+</script>
+
+<!-- W3.CSS Sidebar Scripts -->
+<script>
+    function w3_open() {
+        document.getElementById("main").style.marginLeft = "25%";
+        document.getElementById("mySidebar").style.width = "25%";
+        document.getElementById("mySidebar").style.display = "block";
+        document.getElementById("openNav").style.display = 'none';
+    }
+
+    function w3_close() {
+        document.getElementById("main").style.marginLeft = "0%";
+        document.getElementById("mySidebar").style.display = "none";
+        document.getElementById("openNav").style.display = "inline-block";
+    }
+
+    function myAccFunc() {
+        var x = document.getElementById("demoAcc");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className = x.previousElementSibling.className.replace(" w3-green", "");
+        }
+    }
+
+    function myAccFunc1() {
+        var x = document.getElementById("demoAcc1");
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className = x.previousElementSibling.className.replace(" w3-green", "");
+        }
+    }
+</script>
+
+@* <style>
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .status-pending {
+        background-color: #f39c12;
+        color: white;
+    }
+
+    .status-processing {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .status-ready {
+        background-color: #27ae60;
+        color: white;
+    }
+</style> *@

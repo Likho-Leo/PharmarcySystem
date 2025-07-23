@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<body>
+    <div class="custom-carousel">
+        <div id="carouselExampleInterval" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="10000">
+                    <div class="carousel-slide">
+                        <img src="~/Images/Slides/Slide_1.jpg" class="d-block w-100" alt="Slide 1">
+                        <div class="dark-overlay"></div>
+                        <div class="carousel-caption">
+                            <h3>Manage Prescriptions Online.</h3>
+                            <p>Upload, track, and refill prescriptions—all from your phone.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <div class="carousel-slide">
+                        <img src="~/Images/Slides/Slide_2.jpg" class="d-block w-100" alt="Slide 2">
+                        <div class="dark-overlay"></div>
+                        <div class="carousel-caption">
+                            <h3>Fast. Easy. Secure.</h3>
+                            <p>Manage prescriptions and order meds online with just a few clicks.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-slide">
+                        <img src="~/Images/Slides/Slide_3.jpg" class="d-block w-100" alt="Slide 3">
+                        <div class="dark-overlay"></div>
+                        <div class="carousel-caption">
+                            <h3>Trusted Care, Close to Home.</h3>
+                            <p>Ibhayi Pharmacy brings pharmacy services to your doorstep.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <div class="text-center">
+        <h1 class="pharmacy-title">IBHAYI PHARMACY</h1>
+        <h4 class="tagline">HEALTH MADE SIMPLE</h4>
+        <p class="intro-text"> Your trusted digital partner in healthcare.</p>
+        <p class="intro-text">
+            At Ibhayi Pharmacy, we’re dedicated to bringing fast, reliable, and secure pharmacy services right to your fingertips.
+            This system helps streamline prescription management, monitor stock, and improve patient care — all in one place.
+        </p>
+        <p class="intro-text">Whether you're a customer or staff member, everything you need is just a few clicks away.</p>
+    </div>
+    
+    <div class="services-background">
+        <hr />
+        <br />
+
+        <div class="text-center">
+            <h1 class="pharmacy-title">SERVICES</h1>
+        </div>
+        <br />
+        <div class="slider-wrapper">
+            <button class="arrow left" onclick="scrollLeft()">&#10094;</button>
+
+            <div class="scroll-container" id="cardSlider">
+                <div class="card">
+                    <img src="~/Images/Slides/Slide_1.jpg" class=" rounded d-block w-100" alt="Slide 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Prescription Management</h5>
+                        <hr />
+                        <p class="card-text">Easily upload, process, and track prescriptions — both online and in-store.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="~/Images/Slides/Slide_1.jpg" class=" rounded d-block w-100" alt="Slide 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Stock & Inventory Control</h5>
+                        <hr />
+                        <p class="card-text">Real-time tracking of medicine stock levels, restock alerts, and expiry management.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="~/Images/Slides/Slide_1.jpg" class=" rounded d-block w-100" alt="Slide 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Customer Profiles</h5>
+                        <hr />
+                        <p class="card-text">Secure profiles with order history, prescriptions, and preferences for quick service.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="~/Images/Slides/Slide_1.jpg" class=" rounded d-block w-100" alt="Slide 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Online Odering & Pickup</h5>
+                        <hr />
+                        <p class="card-text">Customers can order meds online and choose delivery or in-store pickup</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="~/Images/Slides/Slide_1.jpg" class=" rounded d-block w-100" alt="Slide 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Automated Notifications</h5>
+                        <hr />
+                        <p class="card-text">Alerts for prescription readiness, stock availability, refills, and order updates.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="~/Images/Slides/Slide_1.jpg" class=" rounded d-block w-100" alt="Slide 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Staff Dashboard</h5>
+                        <hr />
+                        <p class="card-text">Centralized view for pharmacists to manage prescriptions, stock, and customer queries.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="~/Images/Slides/Slide_1.jpg" class=" rounded d-block w-100" alt="Slide 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Reporting & Analytics</h5>
+                        <hr />
+                        <p class="card-text">Insights on sales, most used meds, low stock, and more for better decision-making.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img src="~/Images/Slides/Slide_1.jpg" class=" rounded d-block w-100" alt="Slide 1">
+                    <div class="card-body">
+                        <h5 class="card-title">Secure Login System</h5>
+                        <hr />
+                        <p class="card-text">Role-based access for admins, pharmacists, and customers with encrypted logins.</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="arrow right" onclick="scrollRight()">&#10095;</button>
+        </div>
+
+        <br />
+
+
+    </div>
+</body>

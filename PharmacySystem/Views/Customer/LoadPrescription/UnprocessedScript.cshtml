@@ -1,0 +1,174 @@
+﻿@{
+	ViewData["Title"] = "Unprocessed Prescriptions";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+
+    <!-- Sidebar: always visible -->
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="width: 250px; z-index:0">
+        <h3 class="w3-bar-item">Menu</h3>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Customer" asp-action="Home">Home</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="LoadPrescription">Upload Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="ProcessedScript">Processed Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="UnprocessedScript">Unprocessed Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Order" asp-action="Order">Order</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="GenerateReport" asp-action="GenerateReport">Generate Report</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Account" asp-action="Account">Account</a>
+    </div>
+
+
+    <!-- Main content: shifted right to make space for sidebar -->
+    <div id="main" style="margin-left: 250px;">
+
+        <!-- Header: remove openNav button -->
+        <div class="w3-teal">
+            <div class="w3-container" style="display: flex; align-items: center; gap: 16px; padding:20px">
+                <!-- Removed the sidebar toggle button -->
+                <h1 class="display-4" style="margin: 0;">UNPROCESSED PRESCRIPTIONS</h1>
+            </div>
+        </div>
+
+
+        <div class="w3-container">
+            <hr style="border: 1px solid white; width: 100%; text-align: center;" />
+            <p class="lead">Ibhayi Pharmacy Systems</p>
+            <p>
+                Welcome to the Ibhayi Pharmacy Systems unprocessed prescriptions page.
+            </p>
+            <p>View your unprocessed presriptions on the table below.</p>
+
+            <table id="prescriptionTable" class="table table-bordered table-hover" style="width:90%;">
+                <thead>
+                    <tr class="table-info">
+                        <th scope="col"> No.</th>
+                        <th scope="col">Prescription</th>
+                        <th scope="col" onclick="sortTable(1)">Date ⬍</th>
+                        <th scope="col">Dispense </th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Prescription_John_Doe_2025_05_15.pdf</td>
+                        <td>15-Jun-2025</td>
+                        <td>Yes</td>
+                        <td>
+                            <button type="submit" class="btn btn-success">Change</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Prescription_John_Doe_2025_05_25.pdf</td>
+                        <td>26-Jun-2025</td>
+                        <td>Yes</td>
+                        <td>
+                            <button type="submit" class="btn btn-success">Change</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
+    <script>
+        // Sidebar & accordion functions
+        function w3_open() {
+          document.getElementById("main").style.marginLeft = "25%";
+          document.getElementById("mySidebar").style.width = "25%";
+          document.getElementById("mySidebar").style.display = "block";
+          document.getElementById("openNav").style.display = "none";
+        }
+        function w3_close() {
+          document.getElementById("main").style.marginLeft = "0%";
+          document.getElementById("mySidebar").style.display = "none";
+          document.getElementById("openNav").style.display = "inline-block";
+        }
+        function myAccFunc() {
+          const x = document.getElementById("demoAcc");
+          if (!x.classList.contains("w3-show")) {
+            x.classList.add("w3-show");
+            x.previousElementSibling.classList.add("w3-green");
+          } else {
+            x.classList.remove("w3-show");
+            x.previousElementSibling.classList.remove("w3-green");
+          }
+        }
+
+        // Sorting state
+        let sortDirection = true; // true = ascending
+
+        function sortTable(columnIndex) {
+          const table = document.getElementById("prescriptionTable");
+          const tbody = table.tBodies[0];
+          const rows = Array.from(tbody.rows);
+
+          rows.sort((a, b) => {
+            let aText = a.cells[columnIndex].innerText.trim();
+            let bText = b.cells[columnIndex].innerText.trim();
+            const dateA = Date.parse(aText), dateB = Date.parse(bText);
+
+            if (!isNaN(dateA) && !isNaN(dateB)) {
+              return sortDirection ? dateA - dateB : dateB - dateA;
+            }
+            return sortDirection
+              ? aText.localeCompare(bText)
+              : bText.localeCompare(aText);
+          });
+
+          rows.forEach(r => tbody.appendChild(r));
+          sortDirection = !sortDirection;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+          const changeBtns = document.querySelectorAll(".btn-success");
+          const deleteBtns = document.querySelectorAll(".btn-danger");
+          const selectAll = document.getElementById("selectAll");
+          const rowCheckboxes = document.querySelectorAll(".row-checkbox");
+
+          // Change Yes/No with confirm
+          changeBtns.forEach(btn =>
+            btn.addEventListener("click", () => {
+              const row = btn.closest("tr");
+              const cell = row.cells[2];
+              const oldVal = cell.innerText.trim();
+              const newVal = oldVal === "Yes" ? "No" : "Yes";
+              if (confirm(`Change "${oldVal}" to "${newVal}"?`)) {
+                cell.innerText = newVal;
+              }
+            })
+          );
+
+          // Delete row with confirm
+          deleteBtns.forEach(btn =>
+            btn.addEventListener("click", () => {
+              const row = btn.closest("tr");
+              const name = row.cells[0].innerText.trim();
+              if (confirm(`Delete "${name}"?`)) row.remove();
+            })
+          );
+
+          // Select All functionality
+          selectAll.addEventListener("change", () => {
+            rowCheckboxes.forEach(cb => {
+              cb.checked = selectAll.checked;
+            });
+          });
+        });
+    </script>
+
+</body>

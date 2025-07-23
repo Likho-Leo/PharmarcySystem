@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "AddDosage";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<body>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyManager" asp-action="Home"><i class="fa fa-home"></i> Home</a>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyDetails" asp-action="DisplayAllPharmacyDetail"><i class="fa fa-hospital-o"></i> Pharmacy Details</a>
+        <a class="w3-bar-item w3-button" asp-controller="User" asp-action="DisplayAllUser"><i class="fa fa-users"></i> Employees</a>
+        <a class="w3-bar-item w3-button" asp-controller="Doctor" asp-action="DisplayAllDoctor"><i class="fa fa-user-md"></i> Doctors</a>
+        <a class="w3-bar-item w3-button" asp-controller="Supplier" asp-action="DisplayAllSupplier"><i class="fa fa-truck"></i> Suppliers</a>
+        <a class="w3-bar-item w3-button" asp-controller="ActiveIngredient" asp-action="DisplayAllActiveIngredient"><i class="fa fa-leaf"></i> Active Ingredients</a>
+        <a class="w3-bar-item w3-button" asp-controller="Dosage" asp-action="DisplayAllDosage"><i class="fa fa-medkit"></i> Dosage</a>
+        <a class="w3-bar-item w3-button" asp-controller="Schedule" asp-action="DisplayAllSchedule"><i class="fa fa-calendar"></i> Schedules</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="DisplayAllMedication"><i class="fa fa-pills"></i> Medications</a>
+        <a class="w3-bar-item w3-button" asp-controller="OrderStock" asp-action="DisplayAllOrderStock"><i class="fa fa-cubes"></i> Stock</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="PrintStockReport"><i class="fa fa-print"></i> Print Report</a>
+    </div>
+
+    <div id="main">
+        <div class="w3-teal">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+            <div class="w3-container">
+                <h3 class="display-4">MANAGE DOSAGE</h3>
+            </div>
+        </div>
+        <div class="container mt-5">
+            <div class="bg-white p-4 rounded shadow-sm">
+                <h4 class="mb-3 text-center">RECORD DOSAGE</h4>
+                <p class="text-muted text-center">
+                    Welcome to the Manage Dosage section of our Pharmacy System.
+                </p>
+                <form asp-action="AddDosage" method="post">
+
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="DosageForm" class="form-label">Dosage Form<span style="color: red;">*</span></label>
+                            <input for="DosageForm" type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    @if (TempData["msg"] != null)
+                    {
+                        <div id="notification" class="mb-3 alert alert-info">
+                            @TempData["msg"]
+                        </div>
+                    }
+
+                    <div class="d-flex align-items-center mt-3">
+                        <button type="submit" class="btn btn-success me-3">
+                            <i class="fa fa-save"></i> Save
+                        </button>
+                        <a asp-controller="Dosage" asp-action="DisplayAllDosage" class="btn btn-primary">
+                            <i class="fa fa-list"></i> Display Records
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function w3_open() {
+            document.getElementById("main").style.marginLeft = "25%";
+            document.getElementById("mySidebar").style.width = "25%";
+            document.getElementById("mySidebar").style.display = "block";
+            document.getElementById("openNav").style.display = "none";
+        }
+        function w3_close() {
+            document.getElementById("main").style.marginLeft = "0%";
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        $(document).ready(function () {
+            // Show notification if it exists
+            if ($('#notification').text().trim() !== '') {
+                $('#notification').fadeIn().delay(3000).fadeOut();
+            }
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .w3-sidebar a:hover {
+            background-color: #ccc !important;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+        }
+
+        form .form-label {
+            font-weight: 500;
+        }
+
+        form .btn i {
+            margin-right: 5px;
+        }
+    </style>
+</body>

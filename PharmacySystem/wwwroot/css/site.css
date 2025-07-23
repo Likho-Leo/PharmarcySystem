@@ -1,0 +1,282 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  padding-top:95px;
+}
+
+.container {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/*Navigation settings*/
+.navbar {
+    height: 95px;
+    padding: 0;
+    top: 0;
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+    background-color: darkseagreen;
+    font-size: 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/*navbar logo*/
+.navbar-brand img {
+    height: 150px;
+    width: auto;
+    object-fit: contain;
+}
+
+/*Navbar settings end*/
+
+/*Carousel Settings Start*/
+.custom-carousel {
+    width: 100vw;
+    height: 100%;
+    margin-left: calc(-50vw + 50%);
+    overflow: hidden;
+    position: relative;
+}
+
+.custom-carousel .carousel-item img{
+    object-fit:cover;
+    height:500px;
+    width:auto;
+}
+
+.carousel-slide{
+    position: relative;
+}
+
+.carousel-img{
+    width:auto;
+    height:auto;
+    display:block;
+}
+
+.dark-overlay{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: rgba(0,0,0,0.8);
+    z-index:1;
+}
+
+.carousel-caption{
+    position: absolute;
+    z-index:2;
+    color:white;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    text-align: center;
+}
+
+header, .custom-carousel{
+    margin-bottom:0 !important;
+    padding-bottom:0 !important;
+}
+/*Carousel settings end*/
+
+/*Welcom Section starts*/
+.welcome-section {
+    padding: 60px 20px;
+    background: #f7f7f7;
+    color: #333;
+}
+
+.pharmacy-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700; /* makes it bold */
+    font-size: 2.5rem;
+    margin: 0;
+    color: seagreen;
+}
+
+.tagline {
+    font-size: 1rem;
+    font-family: 'Montserrat', sans-serif;
+    margin-bottom: 1.5rem;
+    color: seagreen; /* matches your topbar green */
+}
+
+
+.intro-text {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+/*Welcom Section Ends*/
+
+/*Image hover starts*/
+.card {
+    border: none;
+    box-shadow: none;
+    max-width: 300px;
+    height: 420px;
+    margin: auto;
+    scroll-snap-align: start;
+    transition: transform 0.3s ease;
+    flex: 0 0 calc(100% / 3 - 1rem);
+    display: flex;
+    flex-direction: column;
+}
+
+
+.card img {
+    transition: transform 0.3s ease;
+    height:500px;
+    object-fit:cover;
+}
+
+.card:hover img {
+    transform: scale(1.05);
+}
+
+/*Image hover ends*/
+
+/*card scroller*/
+.scroll-wrapper {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.scroll-container {
+    display: flex;
+    overflow-x: hidden; /* blocks manual scroll */
+    pointer-events: none; /* disables drag/scroll gestures */
+    gap: 2.5rem;
+    padding: 1rem;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    width: 1000px; /* 250px x 3 cards */
+    margin: auto;
+}
+
+    .scroll-container * {
+        pointer-events: auto;
+    }
+
+.slider-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    background: rgba(0,0,0,0.3);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1;
+    border-radius: 20%;
+}
+
+.scroll-container::-webkit-scrollbar {
+  display: none; /* hide scrollbar if you want */
+}
+
+.arrow.left {
+    left: 5px;
+}
+
+.arrow.right {
+    right: 5px;
+}
+
+.services-background {
+  
+    width: 100vw;
+    height: 100%;
+    margin-left: calc(-50vw + 50%);
+}
+/*card scroller*/
+
+/*Footer*/
+footer {
+    background: rgba(0,0,0,0.8);
+    padding: 1px 0;
+    color: white !important;
+    text-align: center;
+    margin-top: 20px; /* Add this to create space above the footer */
+}
+/*footer ends*/
+
+/*login/reg button*/
+.custom-btn {
+    padding: 8px 16px;
+    background-color: yellowgreen;
+    color: white !important;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: 0.3s ease;
+}
+
+    .custom-btn:hover {
+        background-color: #555;
+    }
+/*login/reg button*/
+
+.wide-dark-box-login {
+    background: rgba(0,0,0,0.8);
+    width: 30%; /* Adjust the width as needed */
+    /*max-width: 1200px;*/ /* Optional: to limit the maximum width */
+    margin: calc(95px + 2rem) auto 0 auto; /* Centers the box */
+    padding: 10px; /* Optional: adds padding inside the box */
+    text-align: left;
+    color: white;
+    font-size: 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.wide-dark-box {
+    background-color: rgba(0, 0, 0, 0.8);
+    width: stretch; /* Let the box adjust to the size of its content */
+    margin: 60px; /* Centers the box horizontally */
+    padding: 20px; /* Add padding for better aesthetics */
+    border-radius: 8px; /* Optional: adds rounded corners */
+    color:white
+}
+
+.w3-sidebar .w3-button:hover {
+    background-color: #009688; /* Teal-ish */
+    color: white;
+}
+
+/*.custom-header {
+    background-color: black !important;
+}
+*/
+.hide-doctor {
+    display: none;
+}
+
+

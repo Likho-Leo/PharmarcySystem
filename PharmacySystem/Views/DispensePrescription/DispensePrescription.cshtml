@@ -1,0 +1,479 @@
+﻿@{
+    ViewData["Title"] = "Dispense Medication";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+@* <link rel="stylesheet" href="~/css/pharmacy-theme.css" /> *@
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+<style>
+    .container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .text-white {
+        --bs-text-opacity: 1;
+        color: #000 !important;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 15px;
+        margin-bottom: 0;
+    }
+
+    .card-body {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        padding: 15px;
+        margin-bottom: 1rem;
+    }
+
+    .order-card {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    .order-header {
+        background: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .patient-info {
+        background: #e9ecef;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .medication-item {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+
+    .status-pending {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .status-processing {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .status-ready {
+        background: #28a745;
+        color: white;
+    }
+
+    .priority-high {
+        border-left: 4px solid #dc3545;
+    }
+
+    .priority-medium {
+        border-left: 4px solid #ffc107;
+    }
+
+    .priority-low {
+        border-left: 4px solid #28a745;
+    }
+
+    .summary-card {
+        text-align: center;
+        padding: 20px;
+        border-radius: 8px;
+        color: white;
+        margin-bottom: 10px;
+    }
+
+        .summary-card.pending {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .summary-card.processing {
+            background: #17a2b8;
+        }
+
+        .summary-card.ready {
+            background: #28a745;
+        }
+
+        .summary-card.total {
+            background: #6c757d;
+        }
+
+        .summary-card h4 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .summary-card p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+
+    .btn {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .action-buttons {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .alert {
+        margin-top: 1rem;
+    }
+</style>
+<body>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large"
+                onclick="w3_close()">
+            Close &times;
+        </button>
+
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="Dashboard" asp-action="Dashboard">Home</a>
+
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+            Upload Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="Prescriptions">Upload Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="DisplayAllPrescriptions">All Prescriptions</a>
+        </div>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc1()">
+            Dispense Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc1" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="FulfillOrders">Dispense Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DispensePrescription">Proccess Orders</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DisplayHistory">Dispense Prescriptions</a>
+
+        </div>
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="PharmacistReport" asp-action="PharmacistReport">Go To Reports</a>
+
+    </div>
+
+    <div id="main">
+        <div class="w3-teal">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+            <div class="w3-container">
+                <h2 class="heading">Dispense Medication</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-white">
+        <form method="post" action="/Dispense">
+
+            <!-- Prescription Search -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label>Search by Patient ID</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="SearchPatientId" placeholder="Enter Patient ID Number">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-secondary">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label>Prescription</label>
+                        <select class="form-control" name="PrescriptionId">
+                            <option value="">Select prescription...</option>
+                            <option value="1">PRX001 - John Doe (2024-03-15)</option>
+                            <option value="2">PRX002 - Mary Smith (2024-03-14)</option>
+                            <option value="3">PRX003 - Peter Jones (2024-03-13)</option>
+                            <option value="4">PRX004 - Sarah Wilson (2024-03-12)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patient Information Display -->
+            <div class="card-header">
+                <h5>Patient Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Name:</strong> John Doe</p>
+                        <p><strong>ID Number:</strong> 8901234567890</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Contact:</strong> 082 123 4567</p>
+                        <p><strong>Email:</strong> john.doe@email.com</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Known Allergies:</strong> Penicillin, Aspirin</p>
+                        <p><strong>Doctor:</strong> Dr. John Smith</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medications to Dispense -->
+            <div class="card-header" style="margin-top: 1rem;">
+                <h5>Medications to Dispense</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered medication-table">
+                        <thead>
+                            <tr>
+                                <th>Medication</th>
+                                <th>Prescribed Qty</th>
+                                <th>Dispense Qty</th>
+                                <th>Instructions</th>
+                                <th>Initial Repeats</th>
+                                <th>Repeats</th>
+                                <th style="min-width: 120px;">Price & Total</th>
+                                <th>Dispense</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Paracetamol 500mg</strong></td>
+                                <td class="text-center">30</td>
+                                <td><input type="number" class="form-control form-control-sm" value="30" min="1" max="30" onchange="updatePrice(this, 1.50, 1)"></td>
+                                <td>Take 1-2 tablets every 4-6 hours</td>
+                                <td class="text-center">2</td>
+                                <td><input type="number" class="form-control form-control-sm" value="0" min="0" max="2"></td>
+                                <td class="price-cell">
+                                    <div class="unit-price">R 1.50 per tablet</div>
+                                    <div class="total-price" id="total-1">Total: R 45.00</div>
+                                </td>
+                                <td class="text-center"><input type="checkbox" class="form-check-input" checked onchange="updateGrandTotal()"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Amoxicillin 250mg</strong></td>
+                                <td class="text-center">21</td>
+                                <td><input type="number" class="form-control form-control-sm" value="21" min="1" max="21" onchange="updatePrice(this, 5.71, 2)"></td>
+                                <td>Take 1 capsule 3 times daily</td>
+                                <td class="text-center">0</td>
+                                <td><input type="number" class="form-control form-control-sm" value="0" min="0" max="0"></td>
+                                <td class="price-cell">
+                                    <div class="unit-price">R 5.71 per capsule</div>
+                                    <div class="total-price" id="total-2">Total: R 120.00</div>
+                                </td>
+                                <td class="text-center"><input type="checkbox" class="form-check-input" checked onchange="updateGrandTotal()"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Ibuprofen 400mg</strong></td>
+                                <td class="text-center">20</td>
+                                <td><input type="number" class="form-control form-control-sm" value="20" min="1" max="20" onchange="updatePrice(this, 1.75, 3)"></td>
+                                <td>Take 1 tablet with food twice daily</td>
+                                <td class="text-center">1</td>
+                                <td><input type="number" class="form-control form-control-sm" value="0" min="0" max="0"></td>
+                                <td class="price-cell">
+                                    <div class="unit-price">R 1.75 per tablet</div>
+                                    <div class="total-price" id="total-3">Total: R 35.00</div>
+                                </td>
+                                <td class="text-center"><input type="checkbox" class="form-check-input" onchange="updateGrandTotal()"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="card-header" style="margin-top: 1rem;">
+                <h5>Order Summary</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <ul class="list-unstyled">
+                            <li>✓ Paracetamol 500mg x 30 tablets - R 45.00</li>
+                            <li>✓ Amoxicillin 250mg x 21 capsules - R 120.00</li>
+                            <li>□ Ibuprofen 400mg x 20 tablets - R 35.00</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4 text-right">
+                        <h4 id="grand-total">Total Due: R 165.00</h4>
+                        <small class="text-muted">Selected items only</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medication Details Textarea -->
+            <div class="form-group mb-3">
+                <div class="col-md-12">
+                    <label>Medication to Dispense</label>
+                    <textarea class="form-control" rows="4" name="MedicationDetails"
+                              placeholder="Dispense medication details...">Paracetamol 500mg - Qty: 30 - Take 1-2 tablets every 4-6 hours - R 45.00
+Amoxicillin 250mg - Qty: 21 - Take 1 capsule 3 times daily - R 120.00</textarea>
+                </div>
+            </div>
+
+            <!-- Allergy Alert -->
+            <div class="alert alert-danger" style="display: block;">
+                <strong>⚠️ ALLERGY ALERT!</strong> Patient is allergic to Penicillin. Amoxicillin contains Penicillin - review before dispensing.
+            </div>
+
+            <!-- Actions -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-success">Dispense</button>
+                <a asp-controller="DispensePrescription" asp-action="FulfillOrders" class="btn btn-primary">Customer Orders</a>
+                <button type="button" class="btn btn-warning">Print Labels</button>
+                <a asp-controller="DispensePrescription" asp-action="DisplayHistory" class="btn btn-primary">History</a>
+            </div>
+        </form>
+    </div>
+
+    <style>
+        .medication-line {
+            border-radius: 5px;
+            border: 1px solid #444;
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.2);
+            border-color: #ffc107;
+            color: #856404;
+        }
+
+        .container {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+
+        .text-white {
+            --bs-text-opacity: 1;
+            color: #000 !important;
+        }
+
+        .price-cell {
+            font-size: 0.9em;
+        }
+
+        .unit-price {
+            color: #666;
+            font-size: 0.8em;
+        }
+
+        .total-price {
+            font-weight: bold;
+            color: #228B22;
+        }
+    </style>
+
+    <script>
+        // Function to update price calculations when quantity changes
+        function updatePrice(input, unitPrice, rowId) {
+            const quantity = parseInt(input.value) || 0;
+            const total = (quantity * unitPrice).toFixed(2);
+            const totalElement = document.getElementById(`total-${rowId}`);
+
+            if (totalElement) {
+                totalElement.textContent = `Total: R ${total}`;
+            }
+
+            // Update grand total
+            updateGrandTotal();
+        }
+
+        function updateGrandTotal() {
+            let grandTotal = 0;
+            const rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach((row, index) => {
+                const checkbox = row.querySelector('input[type="checkbox"]');
+                const qtyInput = row.querySelector('input[type="number"]');
+
+                if (checkbox && checkbox.checked && qtyInput) {
+                    const qty = parseInt(qtyInput.value) || 0;
+                    // Unit prices for each medication
+                    const unitPrices = [1.50, 5.71, 1.75];
+                    if (index < unitPrices.length) {
+                        grandTotal += qty * unitPrices[index];
+                    }
+                }
+            });
+
+            document.getElementById('grand-total').textContent = `Total Due: R ${grandTotal.toFixed(2)}`;
+        }
+    </script>
+
+    <script>
+        function w3_open() {
+          document.getElementById("main").style.marginLeft = "25%";
+          document.getElementById("mySidebar").style.width = "25%";
+          document.getElementById("mySidebar").style.display = "block";
+          document.getElementById("openNav").style.display = 'none';
+        }
+        function w3_close() {
+          document.getElementById("main").style.marginLeft = "0%";
+          document.getElementById("mySidebar").style.display = "none";
+          document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        function myAccFunc() {
+          var x = document.getElementById("demoAcc");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myAccFunc1() {
+          var x = document.getElementById("demoAcc1");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myDropFunc() {
+          var x = document.getElementById("demoDrop");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+    </script>
+</body>

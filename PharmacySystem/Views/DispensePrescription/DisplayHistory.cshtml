@@ -1,0 +1,189 @@
+﻿@{
+    ViewData["Title"] = "Display Dispersed Prescriptions";
+}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="~/css/pharmacy-theme.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large"
+                onclick="w3_close()">
+            Close &times;
+        </button>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+            Upload Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="Prescriptions">Upload Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="DisplayAllPrescriptions">All Prescriptions</a>
+        </div>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc1()">
+            Dispense Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc1" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="FulfillOrders">Dispense Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DispensePrescription">Proccess Orders</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DisplayHistory">Dispense Prescriptions</a>
+
+        </div>
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="PharmacistReport" asp-action="PharmacistReport">Go To Reports</a>
+
+    </div>
+
+    <div id="main">
+
+        <div class="w3-teal">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+            <div class="w3-container">
+                <h2 class="text-center">Prescription History</h2>
+            </div>
+        </div>
+    </div>
+<div class="wide-dark-box text-white">
+   
+    <p class="mb-4">This section shows the history of prescriptions that have already been dispersed to patients.</p>
+
+    <!-- Search Bar -->
+    <form method="get" asp-controller="DispensePrescription" asp-action="DisplayHistory" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="search" class="form-control" placeholder="Search by Patient Name or ID"
+                   value="@Context.Request.Query["search"]" style="max-width: 300px;" />
+            <button class="btn btn-outline-light" type="submit">Search</button>
+        </div>
+    </form>
+
+    <!-- Mock data for display (replace with model later) -->
+    @{
+        var dispersedPrescriptions = new List<dynamic>
+        {
+        new { Id = 1, PatientId = "8701015123085", PatientName = "John Doe", Medication = "Amoxicillin", Dosage = "500mg", DateDispensed = "2025-05-08", Pharmacist = "Dr. Mokoena" },
+        new { Id = 2, PatientId = "9912255123089", PatientName = "Jane Smith", Medication = "Paracetamol", Dosage = "1g", DateDispensed = "2025-05-09", Pharmacist = "Dr. Naidoo" },
+        new { Id = 3, PatientId = "8006155123084", PatientName = "Sam Mhlongo", Medication = "Loratadine", Dosage = "10mg", DateDispensed = "2025-05-10", Pharmacist = "Dr. Pillay" }
+        };
+    }
+
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Medication</th>
+                    <th>Dosage</th>
+                    <th>Date Dispensed</th>
+                    <th>Pharmacist</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-light text-dark">
+                @foreach (var prescription in dispersedPrescriptions)
+                {
+                    <tr>
+                        <td>@prescription.PatientId</td>
+                        <td>@prescription.PatientName</td>
+                        <td>@prescription.Medication</td>
+                        <td>@prescription.Dosage</td>
+                        <td>@prescription.DateDispensed</td>
+                        <td>@prescription.Pharmacist</td>
+                        <td>
+                            <a asp-controller="DispensePrescription" asp-action="ViewHistory" asp-route-id="@prescription.Id" class="btn btn-secondary btn-sm">View</a>
+                            <a asp-controller="DispensePrescription" asp-action="DeleteHistory" asp-route-id="@prescription.Id" class="btn btn-danger btn-sm" onclick="return confirm('Delete this record?')">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <a asp-controller="DispensePrescription" asp-action="DispensePrescription" class="btn btn-primary">Dispense New Prescription</a>
+
+    <div id="notification" style="display:none; padding: 10px;">
+        @if (TempData["msg"] != null)
+        {
+            <div class="alert alert-info">@TempData["msg"]</div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            if ($('#notification').text().trim() !== '') {
+                $('#notification').fadeIn().delay(3000).fadeOut();
+            }
+        });
+    </script>
+}
+
+<style>
+    .wide-dark-box {
+        background-color: #222;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
+    .input-group {
+        max-width: 320px;
+    }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .table {
+        margin-top: 20px;
+    }
+</style>
+    <script>
+        function w3_open() {
+          document.getElementById("main").style.marginLeft = "25%";
+          document.getElementById("mySidebar").style.width = "25%";
+          document.getElementById("mySidebar").style.display = "block";
+          document.getElementById("openNav").style.display = 'none';
+        }
+        function w3_close() {
+          document.getElementById("main").style.marginLeft = "0%";
+          document.getElementById("mySidebar").style.display = "none";
+          document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        function myAccFunc() {
+          var x = document.getElementById("demoAcc");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myAccFunc1() {
+          var x = document.getElementById("demoAcc1");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myDropFunc() {
+          var x = document.getElementById("demoDrop");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+    </script>
+</body>

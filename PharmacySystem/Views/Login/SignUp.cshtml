@@ -1,0 +1,87 @@
+﻿@{
+    ViewData["Title"] = "Sign-up";
+}
+
+<div class="wide-dark-box">
+    <h2 class="text-center">Customer Sign-up</h2>
+    <br />
+    <p>
+        Welcome to the customer registration section of Ibhayi Pharmacy System.
+        <br />
+        Please fill in all the reqired(<span style="color: red;">*</span>) fields to sign up.
+    </p>
+
+    <form asp-action="SignUp" method="post">
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="Name" class="form-label">Name<span style="color: red;">*</span></label>
+                <input for="Name" type="text" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label for="Surname" class="form-label">Surname<span style="color: red;">*</span></label>
+                <input for="Surname" type="text" class="form-control">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="IDNumber" class="form-label">ID Number<span style="color: red;">*</span></label>
+                <input for="IDNumber" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label for="DOB" class="form-label">D.O.B<span style="color: red;">*</span></label>
+                <input for="DOB" class="form-control" type="date" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="CellPhoneNumber" class="form-label">Phone Number<span style="color: red;">*</span></label>
+                <input for="CellPhoneNumber" class="form-control" type="tel" />
+            </div>
+            <div class="col-md-4">
+                <label for="EmailAddress" class="form-label">Email Address<span style="color: red;">*</span></label>
+                <input for="EmailAddress" type="email" class="form-control" aria-required="true" />
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label for="Password" class="form-label">Password<span style="color: red;">*</span></label>
+                <input for="Password" type="text" class="form-control">
+            </div>
+            <div class="col-md-4">
+                <label for="ConfirmPassword" class="form-label">Comfirm Password<span style="color: red;">*</span></label>
+                <input for="ComfirmPassword" type="text" class="form-control">
+            </div>
+        </div>
+        <div id="allergy-container">
+            <div class="row mb-3 allergy-row align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label">Allergies <span style="color: red;">*</span></label>
+                    <select class="form-select" name="allergies[]">
+                        <option value="">-- Select Allergy --</option>
+                        <option value="Penicillin">Penicillin</option>
+                        <option value="Amoxicillin">Amoxicillin</option>
+                        <option value="Cephalosporins">Cephalosporins</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex gap-2">
+                    <button type="button" class="add-btn btn btn-success">+</button>
+                </div>
+            </div>
+        </div>
+
+
+        <br />
+        @if (TempData["msg"] != null)
+        {
+            <div id="notification" class="mb-3 alert alert-info">
+                @TempData["msg"]
+            </div>
+        }
+
+        <div class="d-flex justify-content-start align-items-center">
+            <a asp-controller="Customer" asp-action="Home" class="custom-btn">Register</a>
+        </div>
+    </form>
+</div>
+

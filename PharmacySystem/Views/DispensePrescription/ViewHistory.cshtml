@@ -1,0 +1,67 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "Dispersed Prescription Details";
+}
+<link rel="stylesheet" href="~/css/pharmacy-theme.css" />
+<div class="wide-dark-box text-white">
+    <h1 class="text-center">Dispersed Prescription Details</h1>
+    <p class="mb-4">Below are the details of the dispersed prescription.</p>
+
+    <div class="mb-3">
+        <strong>Patient ID:</strong>
+        <p>@Model.PatientId</p>
+    </div>
+
+    <div class="mb-3">
+        <strong>Patient Name:</strong>
+        <p>@Model.PatientName</p>
+    </div>
+
+    <div class="mb-3">
+        <strong>Medication:</strong>
+        <p>@Model.Medication</p>
+    </div>
+
+    <div class="mb-3">
+        <strong>Dosage:</strong>
+        <p>@Model.Dosage</p>
+    </div>
+
+    <div class="mb-3">
+        <strong>Date Dispensed:</strong>
+        <p>@Model.DateDispensed</p>
+    </div>
+
+    <div class="mb-3">
+        <strong>Pharmacist:</strong>
+        <p>@Model.Pharmacist</p>
+    </div>
+
+    <a asp-action="DisplayHistory" class="btn btn-secondary">Back to History</a>
+</div>
+
+<style>
+    .wide-dark-box {
+        background-color: #222;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        color: white;
+    }
+
+    .mb-3 {
+        margin-bottom: 1rem;
+    }
+
+    strong {
+        display: block;
+        font-size: 1.1rem;
+        color: #ccc;
+    }
+
+    p {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+</style>

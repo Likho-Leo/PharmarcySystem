@@ -1,0 +1,200 @@
+﻿@{
+	ViewData["Title"] = "Request Prescription";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+
+    <!-- Sidebar: always visible -->
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="width: 250px; z-index:0">
+        <h3 class="w3-bar-item">Menu</h3>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Customer" asp-action="Home">Home</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="LoadPrescription">Upload Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="ProcessedScript">Processed Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="UnprocessedScript">Unprocessed Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Order" asp-action="Order">Order</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="GenerateReport" asp-action="GenerateReport">Generate Report</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Account" asp-action="Account">Account</a>
+    </div>
+
+
+    <!-- Main content: shifted right to make space for sidebar -->
+    <div id="main" style="margin-left: 250px;">
+
+        <!-- Header: remove openNav button -->
+        <div class="w3-teal">
+            <div class="w3-container" style="display: flex; align-items: center; gap: 16px; padding:20px">
+                <!-- Removed the sidebar toggle button -->
+                <h1 class="display-4" style="margin: 0;">ORDER MEDICATION</h1>
+            </div>
+        </div>
+
+
+        <div class="w3-container">
+            <h3>Ibhayi Pharmacy Systems</h3>
+            <hr style="border: 1px solid white; width: 100%; text-align: center;" />
+            
+            <p>
+                Welcome to the Ibhayi Pharmacy Systemsorder medication page.
+            </p>
+            <p>View and order your medication on the table below.</p>
+
+            <br />
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label for="DOB" class="form-label">Date<span style="color: red;">*</span></label>
+                    <input id="DOB" class="form-control" type="date" />
+                </div>
+                <div class="col-md-4">
+                    <label for="doctorInput" class="form-label">Doctor<span style="color: red;">*</span></label>
+                    <input id="doctorInput" type="text" class="form-control" readonly>
+                </div>
+            </div>
+
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr class="table-info">
+                        <th scope="col">
+                            <input type="checkbox" id="selectAll">
+                        </th>
+                        <td>No.</td>
+                        <th scope="col" class="hide-doctor">Doctor</th>
+                        <th scope="col">Medicine</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Instruction</th>
+                        <th scope="col">Repeats Left</th>
+                        <th scope="col">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-doctor="Dr. Mike">
+                        <td><input type="checkbox" class="row-checkbox"></td>
+                        <td>1</td>
+                        <td class="hide-doctor">Dr. Mike</td>
+                        <td>Panado Tablets</td>
+                        <td>12</td>
+                        <td>Consume twice a day after meals with milk</td>
+                        <td>3</td>
+                        <td class="price">49,99</td>
+                    </tr>
+                    <tr data-doctor="Dr. Mike">
+                        <td><input type="checkbox" class="row-checkbox"></td>
+                        <td>2</td>
+                        <td class="hide-doctor">Dr Naidoo</td>
+                        <td>Benelyn Cough Syrup 200ml</td>
+                        <td>1</td>
+                        <td>Consume three times a day after meals</td>
+                        <td>2</td>
+                        <td class="price">102,00</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-end" style="margin-top: 20px;">
+                <div style="min-width: 220px; text-align: right;">
+                    <p id="vatAmount">VAT: 15%</p>
+                    <p id="totalAmount">TOTAL PRICE: R 00,00</p>
+                    <br />
+                    <button type="submit" class="btn btn-primary w-30">Place Order</button>
+                </div>
+            </div>
+
+
+           
+        </div>
+    </div>
+
+    <script>
+        function w3_open() {
+          document.getElementById("main").style.marginLeft = "25%";
+          document.getElementById("mySidebar").style.width = "25%";
+          document.getElementById("mySidebar").style.display = "block";
+          document.getElementById("openNav").style.display = 'none';
+        }
+        function w3_close() {
+          document.getElementById("main").style.marginLeft = "0%";
+          document.getElementById("mySidebar").style.display = "none";
+          document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        function myAccFunc() {
+          var x = document.getElementById("demoAcc");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myDropFunc() {
+          var x = document.getElementById("demoDrop");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+             function calculateTotal() {
+            let total = 0;
+            document.querySelectorAll('tbody tr').forEach(row => {
+                const checkbox = row.querySelector('.row-checkbox');
+                if (checkbox.checked) {
+                    const price = parseFloat(row.querySelector('.price').textContent);
+                    total += price;
+                }
+            });
+
+            const vat = total * 0.15;
+            const finalTotal = (total + vat).toFixed(2);
+
+            document.getElementById('vatAmount').textContent = `VAT: 15% (R ${vat.toFixed(2)})`;
+            document.getElementById('totalAmount').textContent = `TOTAL PRICE: R ${finalTotal}`;
+        }
+
+        document.querySelectorAll('.row-checkbox').forEach(cb => {
+            cb.addEventListener('change', calculateTotal);
+        });
+
+        document.getElementById('selectAll').addEventListener('change', function () {
+            const isChecked = this.checked;
+            document.querySelectorAll('.row-checkbox').forEach(cb => {
+                cb.checked = isChecked;
+            });
+            calculateTotal();
+        });
+
+                     const checkboxes = document.querySelectorAll('.row-checkbox');
+        const doctorInput = document.getElementById('doctorInput');
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', function () {
+                // Get the first checked checkbox
+                const firstChecked = Array.from(checkboxes).find(box => box.checked);
+
+                if (firstChecked) {
+                    const row = firstChecked.closest('tr');
+                    const doctor = row.getAttribute('data-doctor');
+                    doctorInput.value = doctor;
+                } else {
+                    doctorInput.value = '';
+                }
+            });
+        });
+
+    </script>
+</body>

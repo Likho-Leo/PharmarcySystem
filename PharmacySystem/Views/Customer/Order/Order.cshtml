@@ -1,0 +1,75 @@
+﻿
+@{
+	ViewData["Title"] = "Display Orders";
+}
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+
+    <!-- Sidebar: always visible -->
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="width: 250px; z-index:0">
+        <h3 class="w3-bar-item">Menu</h3>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Customer" asp-action="Home">Home</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="LoadPrescription">Upload Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="ProcessedScript">Processed Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="UnprocessedScript">Unprocessed Prescriptions</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Order" asp-action="Order">Order</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="GenerateReport" asp-action="GenerateReport">Generate Report</a>
+
+        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Account" asp-action="Account">Account</a>
+    </div>
+
+
+    <!-- Main content: shifted right to make space for sidebar -->
+    <div id="main" style="margin-left: 250px;">
+
+        <!-- Header: remove openNav button -->
+        <div class="w3-teal">
+            <div class="w3-container" style="display: flex; align-items: center; gap: 16px; padding:20px">
+                <!-- Removed the sidebar toggle button -->
+                <h1 class="display-4" style="margin: 0;">ORDERS</h1>
+            </div>
+        </div>
+
+
+        <div class="w3-container">
+            <h3>Ibhayi Pharmacy Systems</h3>
+            <hr style="border: 1px solid white; width: 100%; text-align: center;" />
+
+            <p>
+                Welcome to the Ibhayi Pharmacy Systems processed order page.
+            </p>
+            <p>View your orders in the table below</p>
+        </div>
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr class="table-info">
+                    <th>Order No.</th>
+                    <th scope="col">Medicine</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-doctor="Dr. Mike">
+                    <td>1</td>
+                    <td>Panado Tablets</td>
+                    <td>12</td>
+                    <td class="price">49,99</td>
+                    <td>Pending</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>

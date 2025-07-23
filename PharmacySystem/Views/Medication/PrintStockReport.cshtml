@@ -1,0 +1,148 @@
+﻿@{
+    ViewData["Title"] = "Generate Medication Stock Report";
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyManager" asp-action="Home"><i class="fa fa-home"></i> Home</a>
+        <a class="w3-bar-item w3-button" asp-controller="PharmacyDetails" asp-action="DisplayAllPharmacyDetails"><i class="fa fa-hospital-o"></i> Pharmacy Details</a>
+        <a class="w3-bar-item w3-button" asp-controller="User" asp-action="DisplayAllUser"><i class="fa fa-users"></i> Employees</a>
+        <a class="w3-bar-item w3-button" asp-controller="Doctor" asp-action="DisplayAllDoctor"><i class="fa fa-user-md"></i> Doctors</a>
+        <a class="w3-bar-item w3-button" asp-controller="Supplier" asp-action="DisplayAllSupplier"><i class="fa fa-truck"></i> Suppliers</a>
+        <a class="w3-bar-item w3-button" asp-controller="ActiveIngredient" asp-action="DisplayAllActiveIngredient"><i class="fa fa-leaf"></i> Active Ingredients</a>
+        <a class="w3-bar-item w3-button" asp-controller="Dosage" asp-action="DisplayAllDosage"><i class="fa fa-medkit"></i> Dosage</a>
+        <a class="w3-bar-item w3-button" asp-controller="Schedule" asp-action="DisplayAllSchedule"><i class="fa fa-calendar"></i> Schedules</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="DisplayAllMedication"><i class="fa fa-pills"></i> Medications</a>
+        <a class="w3-bar-item w3-button" asp-controller="OrderStock" asp-action="DisplayAllOrderStock"><i class="fa fa-cubes"></i> Stock</a>
+        <a class="w3-bar-item w3-button" asp-controller="Medication" asp-action="PrintStockReport"><i class="fa fa-print"></i> Print Report</a>
+    </div>
+
+    <div id="main">
+        <div class="w3-teal">
+            <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+            <div class="w3-container">
+                <h3 class="display-4">GENERATE STOCK REPORT</h3>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <p class="lead">Generate a stock report of medications grouped by your preferred category.</p>
+
+            <!-- Filter Form -->
+            <form class="mb-4">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label>Filter by Dosage Form</label>
+                        <select class="form-select">
+                            <option>All</option>
+                            <option>Tablet</option>
+                            <option>Syrup</option>
+                            <option>Injection</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Filter by Schedule</label>
+                        <select class="form-select">
+                            <option>All</option>
+                            <option>Schedule 1</option>
+                            <option>Schedule 2</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Filter by Supplier</label>
+                        <select class="form-select">
+                            <option>All</option>
+                            <option>ABC Pharma</option>
+                            <option>MedSupply Inc.</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Sample Report Table -->
+            @{
+                var medications = new List<dynamic> {
+            new { Name = "Paracetamol", DosageForm = "Tablet", Schedule = "Schedule 1", Supplier = "ABC Pharma", StockLevel = 200, QuantityOnHand = 180 },
+            new { Name = "Amoxicillin", DosageForm = "Syrup", Schedule = "Schedule 2", Supplier = "MedSupply Inc.", StockLevel = 150, QuantityOnHand = 135 }
+            };
+            }
+
+            <div class="table-responsive shadow-sm rounded bg-white p-3">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Medication Name</th>
+                            <th>Dosage Form</th>
+                            <th>Schedule</th>
+                            <th>Supplier</th>
+                            <th>Stock Level</th>
+                            <th>Quantity on Hand</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var med in medications)
+                        {
+                            <tr>
+                                <td>@med.Name</td>
+                                <td>@med.DosageForm</td>
+                                <td>@med.Schedule</td>
+                                <td>@med.Supplier</td>
+                                <td>@med.StockLevel</td>
+                                <td>@med.QuantityOnHand</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4">
+                <button class="btn btn-primary">
+                    <i class="fa fa-print"></i> Print Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function w3_open() {
+            document.getElementById("main").style.marginLeft = "25%";
+            document.getElementById("mySidebar").style.width = "25%";
+            document.getElementById("mySidebar").style.display = "block";
+            document.getElementById("openNav").style.display = 'none';
+        }
+
+        function w3_close() {
+            document.getElementById("main").style.marginLeft = "0%";
+            document.getElementById("mySidebar").style.display = "none";
+            document.getElementById("openNav").style.display = "inline-block";
+        }
+    </script>
+
+    <style>
+        .w3-sidebar a:hover {
+            background-color: #ccc !important;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        table td, table th {
+            vertical-align: middle;
+        }
+
+        .btn i {
+            margin-right: 5px;
+        }
+
+        select.form-select {
+            width: 100%;
+        }
+    </style>
+</body>

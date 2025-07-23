@@ -1,0 +1,443 @@
+﻿@{
+    ViewData["Title"] = "Load Prescription";
+}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+@* <link rel="stylesheet" href="~/css/pharmacy-theme.css" /> *@
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    .container {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    .text-white {
+        --bs-text-opacity: 1;
+        color: #000 !important;
+    }
+
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #dee2e6;
+        padding: 10px 15px;
+        margin-bottom: 0;
+    }
+
+    .card-body {
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        border-top: none;
+        padding: 15px;
+        margin-bottom: 1rem;
+    }
+
+    .order-card {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    .order-header {
+        background: #007bff;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .patient-info {
+        background: #e9ecef;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .medication-item {
+        background: white;
+        border: 1px solid #e9ecef;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+
+    .status-pending {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .status-processing {
+        background: #17a2b8;
+        color: white;
+    }
+
+    .status-ready {
+        background: #28a745;
+        color: white;
+    }
+
+    .priority-high {
+        border-left: 4px solid #dc3545;
+    }
+
+    .priority-medium {
+        border-left: 4px solid #ffc107;
+    }
+
+    .priority-low {
+        border-left: 4px solid #28a745;
+    }
+
+    .summary-card {
+        text-align: center;
+        padding: 20px;
+        border-radius: 8px;
+        color: white;
+        margin-bottom: 10px;
+    }
+
+        .summary-card.pending {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .summary-card.processing {
+            background: #17a2b8;
+        }
+
+        .summary-card.ready {
+            background: #28a745;
+        }
+
+        .summary-card.total {
+            background: #6c757d;
+        }
+
+        .summary-card h4 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .summary-card p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+        }
+
+    .btn {
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .action-buttons {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #dee2e6;
+    }
+
+    .form-control:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .alert {
+        margin-top: 1rem;
+    }
+</style>
+<body>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" style="display:none" id="mySidebar">
+        <button class="w3-bar-item w3-button w3-large"
+                onclick="w3_close()">
+            Close &times;
+        </button>
+
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="Dashboard" asp-action="Dashboard">Home</a>
+
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc()">
+            Upload Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="Prescriptions">Upload Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="DisplayAllPrescriptions">All Prescriptions</a>
+        </div>
+        <button class="w3-button w3-block w3-left-align" onclick="myAccFunc1()">
+            Dispense Prescription <i class="fa fa-caret-down"></i>
+        </button>
+        <div id="demoAcc1" class="w3-hide w3-white w3-card">
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="FulfillOrders">Dispense Prescriptions</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DispensePrescription">Proccess Orders</a>
+            <a class="w3-bar-item w3-button" asp-area="" asp-controller="DispensePrescription" asp-action="DisplayHistory">Dispense Prescriptions</a>
+
+        </div>
+        <a class="w3-bar-item w3-button" asp-area="" asp-controller="PharmacistReport" asp-action="PharmacistReport">Go To Reports</a>
+
+    </div>
+        <div id="main">
+
+            <div class="w3-teal">
+                <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+                <div class="w3-container">
+                <h2 class="heading">Load Prescription</h2>
+                </div>
+            </div>
+        </div>
+
+    <div class="container text-white">
+       
+        <form method="post" enctype="multipart/form-data" asp-action="Load">
+
+            <!-- Basic Prescription Information -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label>Upload Prescription PDF *</label>
+                        <input type="file" class="form-control" name="PrescriptionFile" accept=".pdf" required />
+                        <small class="form-text text-muted">Only PDF files are accepted</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label>Prescription Date *</label>
+                        <input type="date" class="form-control" name="PrescriptionDate" required />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patient and Doctor Information -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label>Patient ID Number *</label>
+                        <input type="text" class="form-control" name="PatientIdNumber"
+                               placeholder="e.g., 8901234567890" maxlength="13" required />
+                        <small class="form-text text-muted">Enter 13-digit South African ID number</small>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label>Prescribing Doctor *</label>
+                        <select class="form-control" name="DoctorId" required>
+                            <option value="">Select doctor...</option>
+                            <option value="1">Dr. John Smith (Practice: MP001234)</option>
+                            <option value="2">Dr. Sarah Johnson (Practice: MP005678)</option>
+                            <option value="3">Dr. Michael Brown (Practice: MP009012)</option>
+                            <option value="4">Dr. Lisa Davis (Practice: MP003456)</option>
+                        </select>
+                        <small class="form-text text-muted">
+                            <a class="w3-bar-item w3-button" asp-area="" asp-controller="Prescriptions" asp-action="AddDoc">Add new Doctor</a>
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prescription Status -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label>Prescription Status *</label>
+                        <select class="form-control" name="PrescriptionStatus" required>
+                            <option value="">Select status...</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Ready">Ready for Collection</option>
+                            <option value="Dispensed">Dispensed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medication Lines Section -->
+            <div>
+                <div class="card-header d-flex justify-content-between align-items-center" style="background-color: yellowgreen">
+                    <h5 class="mb-0">Prescription Medications</h5>
+                    <button type="button" class="btn btn-success btn-sm" onclick="addMedicationLine()">
+                        + Add Medication
+                    </button>
+                </div>
+                <div class="card-body" id="medicationLines">
+                    <!-- Sample medication line -->
+                    <div class="medication-line border p-3 mb-3">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Medication *</label>
+                                <select class="form-control" name="MedicationId" required>
+                                    <option value="">Select medication...</option>
+                                    <option value="1">Paracetamol 500mg Tablets</option>
+                                    <option value="2">Amoxicillin 250mg Capsules</option>
+                                    <option value="3">Ibuprofen 400mg Tablets</option>
+                                    <option value="4">Omeprazole 20mg Capsules</option>
+                                    <option value="5">Metformin 500mg Tablets</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label>Quantity *</label>
+                                <input type="number" class="form-control" name="Quantity" min="1" placeholder="30" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label>Instructions</label>
+                                <input type="text" class="form-control" name="Instructions" placeholder="Take 1 tablet twice daily">
+                            </div>
+                            <div class="col-md-2">
+                                <label>Repeats</label>
+                                <input type="number" class="form-control" name="NumberOfRepeats" min="0" max="5" value="0">
+                            </div>
+                            <div class="col-md-2">
+                                <label>&nbsp;</label>
+                                <button type="button" class="btn btn-danger btn-block" onclick="removeMedicationLine(this)">
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Allergy Alert Section (Static Demo) -->
+            <div class="alert alert-warning" style="display: block;">
+                <strong>ℹ️ Allergy Check:</strong> Click "Check Allergies" to verify patient allergies against prescribed medications.
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save Prescription</button>
+                <a asp-controller="Prescriptions" asp-action="AllergyCheck" class="btn btn-info">Check Allergies</a>
+                <a asp-controller="Prescriptions" asp-action="DisplayAllPrescriptions" class="btn btn-info">View All Prescriptions</a>
+                <button type="reset" class="btn btn-outline-secondary">Reset Form</button>
+            </div>
+        </form>
+    </div>
+
+    <style>
+        .medication-line {
+            border-radius: 5px;
+            border: 1px solid #444;
+        }
+
+        .alert-warning {
+            background-color: rgba(255, 193, 7, 0.2);
+            border-color: #ffc107;
+            color: #856404;
+        }
+
+        .container {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+
+        .text-white {
+            --bs-text-opacity: 1;
+            color: #000 !important;
+        }
+    </style>
+
+    <script>
+        // Simple JavaScript for demo functionality
+        function addMedicationLine() {
+            const medicationLines = document.getElementById('medicationLines');
+            const newLine = document.createElement('div');
+            newLine.className = 'medication-line border p-3 mb-3';
+            newLine.style.backgroundColor = 'rgba(255,255,255,0.05)';
+
+            newLine.innerHTML = `
+                <div class="row">
+                    <div class="col-md-3">
+                        <label>Medication *</label>
+                        <select class="form-control" name="MedicationId" required>
+                            <option value="">Select medication...</option>
+                            <option value="1">Paracetamol 500mg Tablets</option>
+                            <option value="2">Amoxicillin 250mg Capsules</option>
+                            <option value="3">Ibuprofen 400mg Tablets</option>
+                            <option value="4">Omeprazole 20mg Capsules</option>
+                            <option value="5">Metformin 500mg Tablets</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Quantity *</label>
+                        <input type="number" class="form-control" name="Quantity" min="1" placeholder="30" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Instructions</label>
+                        <input type="text" class="form-control" name="Instructions" placeholder="Take 1 tablet twice daily">
+                    </div>
+                    <div class="col-md-2">
+                        <label>Repeats</label>
+                        <input type="number" class="form-control" name="NumberOfRepeats" min="0" max="5" value="0">
+                    </div>
+                    <div class="col-md-2">
+                        <label>&nbsp;</label>
+                        <button type="button" class="btn btn-danger btn-block" onclick="removeMedicationLine(this)">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            medicationLines.appendChild(newLine);
+        }
+
+        function removeMedicationLine(button) {
+            const line = button.closest('.medication-line');
+            if (line) {
+                line.remove();
+            }
+        }
+    </script>
+
+    <script>
+        function w3_open() {
+          document.getElementById("main").style.marginLeft = "25%";
+          document.getElementById("mySidebar").style.width = "25%";
+          document.getElementById("mySidebar").style.display = "block";
+          document.getElementById("openNav").style.display = 'none';
+        }
+        function w3_close() {
+          document.getElementById("main").style.marginLeft = "0%";
+          document.getElementById("mySidebar").style.display = "none";
+          document.getElementById("openNav").style.display = "inline-block";
+        }
+
+        function myAccFunc() {
+          var x = document.getElementById("demoAcc");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myAccFunc1() {
+          var x = document.getElementById("demoAcc1");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+
+        function myDropFunc() {
+          var x = document.getElementById("demoDrop");
+          if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+            x.previousElementSibling.className += " w3-green";
+          } else {
+            x.className = x.className.replace(" w3-show", "");
+            x.previousElementSibling.className =
+            x.previousElementSibling.className.replace(" w3-green", "");
+          }
+        }
+    </script>
+</body> 
