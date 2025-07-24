@@ -4,73 +4,110 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <body>
 
-    <!-- Sidebar: always visible -->
-    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="width: 250px; z-index:0">
-        <h3 class="w3-bar-item">Menu</h3>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="display:none;width:250px;z-index:1000; background-color:#f8f8f8">
+        <button class="w3-bar-item w3-button w3-large" onclick="w3_close()" style="text-align:left;">
+            <i class="fa fa-times"></i> &nbsp; Close
+        </button>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Customer" asp-action="Home">Home</a>
+        <a class="w3-bar-item w3-button" asp-controller="Customer" asp-action="Home">
+            <i class="fa fa-home"></i> &nbsp;Home
+        </a>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="LoadPrescription">Upload Prescriptions</a>
+        <hr />
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="ProcessedScript">Processed Prescriptions</a>
+        <!-- Prescriptions Group -->
+        <div class="w3-bar-item w3-text-grey w3-small">Prescriptions</div>
+        <a class="w3-bar-item w3-button" asp-controller="LoadPrescription" asp-action="LoadPrescription">
+            <i class="fa fa-upload"></i> &nbsp;Upload
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="LoadPrescription" asp-action="UnprocessedScript">
+            <i class="fa fa-hourglass-half"></i> &nbsp;Pending
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="LoadPrescription" asp-action="ProcessedScript">
+            <i class="fa fa-check-circle"></i> &nbsp;Approved
+        </a>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="UnprocessedScript">Unprocessed Prescriptions</a>
+        <hr />
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Order" asp-action="Order">Order</a>
+        <!-- Orders Group -->
+        <div class="w3-bar-item w3-text-grey w3-small">Orders</div>
+        <a class="w3-bar-item w3-button" asp-controller="RequestPrescription" asp-action="RequestPrescription">
+            <i class="fa fa-shopping-cart"></i> &nbsp;Place Order
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="Order" asp-action="Order">
+            <i class="fa fa-receipt"></i> &nbsp;View Orders
+        </a>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="GenerateReport" asp-action="GenerateReport">Generate Report</a>
+        <hr />
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Account" asp-action="Account">Account</a>
+        <!-- Other Group -->
+        <div class="w3-bar-item w3-text-grey w3-small">Other</div>
+        <a class="w3-bar-item w3-button" asp-controller="GenerateReport" asp-action="GenerateReport">
+            <i class="fa fa-file-pdf-o"></i> &nbsp;View Reports
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="Account" asp-action="Account">
+            <i class="fa fa-user"></i> &nbsp;My Profile
+        </a>
     </div>
 
 
-    <!-- Main content: shifted right to make space for sidebar -->
-    <div id="main" style="margin-left: 250px;">
+    <div id="main" style="margin-left: 0;">
 
         <!-- Header: remove openNav button -->
         <div class="w3-teal">
             <div class="w3-container" style="display: flex; align-items: center; gap: 16px; padding:20px">
-                <!-- Removed the sidebar toggle button -->
+                <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
                 <h1 class="display-4" style="margin: 0;">GENERATE REPORT</h1>
             </div>
         </div>
 
-        <div class="w3-container">
-            <h4>Ibhayi Pharmacy Systems</h4>
-            <hr style="border: 1px solid white; width: 100%; text-align: center;" />
-            
-            <p>
-                Welcome to the Ibhayi Pharmacy Systems generate report page.
-            </p>
-            <p>Use the fields below to generete accordingly</p>
+            <div class="w3-container">
+                <h2>Ibhayi Pharmacy Systems</h2>
+                <hr style="border: 1px solid white; width: 100%; text-align: center;" />
 
-            <div class="row mb-3">
-                <div class="col-md-4">
-                    <label for="SD" class="form-label">End Date<span style="color: red;">*</span></label>
-                    <input for="SD" class="form-control" type="date" />
+                <p>Select a date range and group the report by category.</p>
+                <hr style="border: 1px solid white; width: 100%; text-align: center;" />
+
+            <form asp-action="GeneratePDFReport" method="post" class="row g-4 p-4 rounded shadow-sm border bg-light">
+                <div class="col-md-6">
+                    <label for="startDate" class="form-label fw-semibold">Start Date</label>
+                    <input type="date" class="form-control" id="startDate" name="StartDate" required>
                 </div>
-                <div class="col-md-4">
-                    <label for="ED" class="form-label">End Date<span style="color: red;">*</span></label>
-                    <input for="ED" class="form-control" type="date" />
+                <div class="col-md-6">
+                    <label for="endDate" class="form-label fw-semibold">End Date</label>
+                    <input type="date" class="form-control" id="endDate" name="EndDate" required>
                 </div>
+
+                <!-- Optional Group By Section -->
+                @* 
+    <div class="col-md-12">
+        <label for="groupBy" class="form-label fw-semibold">Group By</label>
+        <select class="form-select" id="groupBy" name="GroupBy" required>
+            <option value="patient">Patient</option>
+            <option value="doctor">Doctor</option>
+            <option value="medication">Medication</option>
+        </select>
+    </div>
+    *@
+
+                <div class="col-12 text-center mt-3">
+                    <a asp-action="GeneratePdfGroupedByPatient" class="btn btn-success me-2">
+                        📄 Patient Report
+                    </a>
+                    <a asp-action="GeneratePdfGroupedByDoctor" class="btn btn-primary me-2">
+                        📄 Doctor Report
+                    </a>
+                    <a asp-action="GenerateGroupedByMedicationPdf" class="btn btn-warning">
+                        📄 Medication Report
+                    </a>
+                </div>
+            </form>
+
             </div>
-            <div class="col-md-4">
-                <label class="form-label">Group <span style="color: red;">*</span></label>
-                <select class="form-select" name="allergies[]">
-                    <option value="Doctor">Doctor</option>
-                    <option value="Medication">Medication</option>
-                    <option value="Patient">Patient</option>
-                </select>
-            </div>
-            <br />
-            <br />
-            <div class="d-flex justify-content-start align-items-center">
-                <button class="btn btn-success">Generate</button>
-            </div>
-       </div>
-        
    </div>
 
     <script>
@@ -109,5 +146,41 @@
             x.previousElementSibling.className.replace(" w3-green", "");
           }
         }
+
+        //validation
+             function validateDates() {
+          const start = document.getElementById("startDate").value;
+          const end = document.getElementById("endDate").value;
+
+          if (!start || !end) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Missing Date',
+              text: 'Please select both a start and end date before continuing.',
+              confirmButtonColor: '#3085d6'
+            });
+            return false;
+          }
+          return true;
+        }
+
+        // Attach to all report buttons
+        document.querySelectorAll(".report-btn").forEach(btn => {
+          btn.addEventListener("click", function (e) {
+            if (!validateDates()) {
+              e.preventDefault();
+            }
+          });
+        });
+
+        //more validation
+        document.getElementById("endDate").addEventListener("change", function () {
+          const start = new Date(document.getElementById("startDate").value);
+          const end = new Date(this.value);
+          if (end < start) {
+            alert("End date cannot be before start date.");
+            this.value = "";
+          }
+        });
     </script>
 </body>

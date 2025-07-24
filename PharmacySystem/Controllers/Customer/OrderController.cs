@@ -8,5 +8,10 @@ namespace PharmacySystem.Controllers.Customer
         {
             return View("~/Views/Customer/Order/Order.cshtml");
         }
+
+        public IActionResult cust_viewOrder()
+        {
+            return View("~/Views/Customer/Order/cust_viewOrder.cshtml");
+        }
     }
 }

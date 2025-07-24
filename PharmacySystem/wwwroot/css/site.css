@@ -1,25 +1,25 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin: 0;
-  padding-top:95px;
+    margin: 0;
+    padding-top: 95px;
 }
 
 .container {
@@ -58,45 +58,45 @@ body {
     position: relative;
 }
 
-.custom-carousel .carousel-item img{
-    object-fit:cover;
-    height:500px;
-    width:auto;
-}
+    .custom-carousel .carousel-item img {
+        object-fit: cover;
+        height: 500px;
+        width: auto;
+    }
 
-.carousel-slide{
+.carousel-slide {
     position: relative;
 }
 
-.carousel-img{
-    width:auto;
-    height:auto;
-    display:block;
+.carousel-img {
+    width: auto;
+    height: auto;
+    display: block;
 }
 
-.dark-overlay{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background: rgba(0,0,0,0.8);
-    z-index:1;
-}
-
-.carousel-caption{
+.dark-overlay {
     position: absolute;
-    z-index:2;
-    color:white;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1;
+}
+
+.carousel-caption {
+    position: absolute;
+    z-index: 2;
+    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
     text-align: center;
 }
 
-header, .custom-carousel{
-    margin-bottom:0 !important;
-    padding-bottom:0 !important;
+header, .custom-carousel {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
 }
 /*Carousel settings end*/
 
@@ -146,15 +146,15 @@ header, .custom-carousel{
 }
 
 
-.card img {
-    transition: transform 0.3s ease;
-    height:500px;
-    object-fit:cover;
-}
+    .card img {
+        transition: transform 0.3s ease;
+        height: 500px;
+        object-fit: cover;
+    }
 
-.card:hover img {
-    transform: scale(1.05);
-}
+    .card:hover img {
+        transform: scale(1.05);
+    }
 
 /*Image hover ends*/
 
@@ -201,7 +201,7 @@ header, .custom-carousel{
 }
 
 .scroll-container::-webkit-scrollbar {
-  display: none; /* hide scrollbar if you want */
+    display: none; /* hide scrollbar if you want */
 }
 
 .arrow.left {
@@ -213,7 +213,6 @@ header, .custom-carousel{
 }
 
 .services-background {
-  
     width: 100vw;
     height: 100%;
     margin-left: calc(-50vw + 50%);
@@ -263,7 +262,7 @@ footer {
     margin: 60px; /* Centers the box horizontally */
     padding: 20px; /* Add padding for better aesthetics */
     border-radius: 8px; /* Optional: adds rounded corners */
-    color:white
+    color: white
 }
 
 .w3-sidebar .w3-button:hover {
@@ -280,3 +279,28 @@ footer {
 }
 
 
+/*Side-bar transition*/
+#mySidebar {
+    transition: 0.3s ease;
+}
+
+#main {
+    transition: margin-left 0.3s ease;
+}
+
+
+/*dashboard cards*/
+.dashboard-card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.dashboard-card-inner {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .dashboard-card-inner:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }

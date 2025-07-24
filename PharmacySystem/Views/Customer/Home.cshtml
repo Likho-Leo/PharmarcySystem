@@ -8,44 +8,115 @@
 <body>
 
     <!-- Sidebar: always visible -->
-    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="width: 250px; z-index:0">
-        <h3 class="w3-bar-item">Menu</h3>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="display:none;width:250px;z-index:1000; background-color:#f8f8f8">
+        <button class="w3-bar-item w3-button w3-large" onclick="w3_close()" style="text-align:left;">
+            <i class="fa fa-times"></i> &nbsp; Close
+        </button>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="LoadPrescription">Upload Prescriptions</a>
+        <!-- Prescriptions Group -->
+        <div class="w3-bar-item w3-text-grey w3-small">Prescriptions</div>
+        <a class="w3-bar-item w3-button" asp-controller="LoadPrescription" asp-action="LoadPrescription">
+            <i class="fa fa-upload"></i> &nbsp;Upload
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="LoadPrescription" asp-action="UnprocessedScript">
+            <i class="fa fa-hourglass-half"></i> &nbsp;Pending
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="LoadPrescription" asp-action="ProcessedScript">
+            <i class="fa fa-check-circle"></i> &nbsp;Approved
+        </a>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="ProcessedScript">Processed Prescriptions</a>
+        <hr />
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="UnprocessedScript">Unprocessed Prescriptions</a>
+        <!-- Orders Group -->
+        <div class="w3-bar-item w3-text-grey w3-small">Orders</div>
+        <a class="w3-bar-item w3-button" asp-controller="Order" asp-action="Order">
+            <i class="fa fa-shopping-cart"></i> &nbsp;Place Order
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="Order" asp-action="Order">
+            <i class="fa fa-receipt"></i> &nbsp;View Orders
+        </a>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Order" asp-action="Order">Order</a>
+        <hr />
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="GenerateReport" asp-action="GenerateReport">Generate Report</a>
-
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Account" asp-action="Account">Account</a>
+        <!-- Other Group -->
+        <div class="w3-bar-item w3-text-grey w3-small">Other</div>
+        <a class="w3-bar-item w3-button" asp-controller="GenerateReport" asp-action="GenerateReport">
+            <i class="fa fa-file-pdf-o"></i> &nbsp;View Reports
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="Account" asp-action="Account">
+            <i class="fa fa-user"></i> &nbsp;My Profile
+        </a>
     </div>
 
 
+
     <!-- Main content: shifted right to make space for sidebar -->
-    <div id="main" style="margin-left: 250px;">
+    <div id="main" style="margin-left: 0;">
 
         <!-- Header: remove openNav button -->
         <div class="w3-teal">
             <div class="w3-container" style="display: flex; align-items: center; gap: 16px; padding:20px">
-                <!-- Removed the sidebar toggle button -->
+                <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
                 <h1 class="display-4" style="margin: 0;">HOME</h1>
             </div>
         </div>
 
 
-        <div class="w3-container">
-            <h1 class="display-4">Welcome Mr. Leohla</h1>
+        <div class="w3-container text-center">
+            <h1 class="display-4">Welcome Mr. Doe</h1>
             <hr style="border: 1px solid white; width: 100%; text-align: center;" />
-            <p class="lead">Ibhayi Pharmacy Systems</p>
             <p>
                 Welcome to the Ibhayi Pharmacy Systems customer home page.
             </p>
-            <p>Navigate through the options on the side to access the features and services.</p>
+            <p>Use the menu to manage your prescriptions, request refills, view your orders, and generate reports all in one place..</p>
+            <hr />
+            <h4>Prescriptions</h4>
+            <hr />
+       </div>
+
+        <div style="display: flex; justify-content: center;">
+            <div class="dashboard-carousel" style="display: flex; gap: 16px;">
+                <a asp-controller="LoadPrescription" asp-action="LoadPrescription" class="dashboard-card-link">
+                    <div class="dashboard-card">
+                        <div class="w3-card w3-center w3-light-grey dashboard-card-inner">
+                            <i class="fa fa-upload w3-xxlarge w3-margin-top"></i>
+                            <h4>Uploaded</h4>
+                            <p>2</p>
+                        </div>
+                    </div>
+                </a>
+                <a asp-controller="LoadPrescription" asp-action="UnprocessedScript" class="dashboard-card-link">
+                    <div class="dashboard-card">
+                        <div class="w3-card w3-center w3-light-grey dashboard-card-inner">
+                            <i class="fa fa-hourglass-half w3-xxlarge w3-margin-top"></i>
+                            <h4>Pending</h4>
+                            <p>2</p>
+                        </div>
+                    </div>
+                </a>
+                <a asp-controller="LoadPrescription" asp-action="ProcessedScript" class="dashboard-card-link">
+                    <div class="dashboard-card">
+                        <div class="w3-card w3-center w3-light-grey dashboard-card-inner">
+                            <i class="fa fa-check-circle w3-xxlarge w3-margin-top"></i>
+                            <h4>Processed</h4>
+                            <p>1</p>
+                        </div>
+                    </div>
+                </a>
+                <a asp-controller="Order" asp-action="Order" class="dashboard-card-link">
+                    <div class="dashboard-card">
+                        <div class="w3-card w3-center w3-light-grey dashboard-card-inner">
+                            <i class="fa fa-receipt w3-xxlarge w3-margin-top"></i>
+                            <h4>Orders</h4>
+                            <p>2</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
         </div>
+
+
     </div>
 
     <script>
@@ -85,5 +156,29 @@
           }
         }
     </script>
+
+        <style>
+            .dashboard-carousel {
+                display: flex;
+                overflow-x: auto;
+                gap: 16px;
+                padding: 16px;
+                scroll-snap-type: x mandatory;
+            }
+
+            .dashboard-card {
+                min-width: 200px;
+                flex: 0 0 auto;
+                scroll-snap-align: start;
+            }
+
+                .dashboard-card .w3-card {
+                    height: 150px;
+                }
+
+                .dashboard-card::-webkit-scrollbar {
+                    display: none; /* hide scrollbar */
+                }
+        </style>
 </body>
 

@@ -1,4 +1,14 @@
+using PharmacySystem.Controllers.Customer;
+using DinkToPdf.Contracts;
+using DinkToPdf;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var context = new CustomAssemblyLoadContext();
+context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "PdfLib", "libwkhtmltox.dll"));
+
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -6,71 +6,122 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <body>
 
-    <!-- Sidebar: always visible -->
-    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="width: 250px; z-index:0">
-        <h3 class="w3-bar-item">Menu</h3>
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Customer" asp-action="Home">Home</a>
+    <div class="w3-sidebar w3-bar-block w3-card w3-animate-left" id="mySidebar" style="display:none;width:250px;z-index:1000; background-color:#f8f8f8">
+        <button class="w3-bar-item w3-button w3-large" onclick="w3_close()" style="text-align:left;">
+            <i class="fa fa-times"></i> &nbsp; Close
+        </button>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="LoadPrescription">Upload Prescriptions</a>
+        <a class="w3-bar-item w3-button" asp-controller="Customer" asp-action="Home">
+            <i class="fa fa-home"></i> &nbsp;Home
+        </a>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="ProcessedScript">Processed Prescriptions</a>
+        <hr />
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="LoadPrescription" asp-action="UnprocessedScript">Unprocessed Prescriptions</a>
+        <!-- Prescriptions Group -->
+        <div class="w3-bar-item w3-text-grey w3-small">Prescriptions</div>
+        <a class="w3-bar-item w3-button" asp-controller="LoadPrescription" asp-action="LoadPrescription">
+            <i class="fa fa-upload"></i> &nbsp;Upload
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="LoadPrescription" asp-action="UnprocessedScript">
+            <i class="fa fa-hourglass-half"></i> &nbsp;Pending
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="LoadPrescription" asp-action="ProcessedScript">
+            <i class="fa fa-check-circle"></i> &nbsp;Approved
+        </a>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Order" asp-action="Order">Order</a>
+        <hr />
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="GenerateReport" asp-action="GenerateReport">Generate Report</a>
+        <!-- Orders Group -->
+        <div class="w3-bar-item w3-text-grey w3-small">Orders</div>
+        <a class="w3-bar-item w3-button" asp-controller="RequestPrescription" asp-action="RequestPrescription">
+            <i class="fa fa-shopping-cart"></i> &nbsp;Place Order
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="Order" asp-action="Order">
+            <i class="fa fa-receipt"></i> &nbsp;View Orders
+        </a>
 
-        <a class="w3-bar-item w3-button" style="border-bottom: 1px solid #ccc;" asp-area="" asp-controller="Account" asp-action="Account">Account</a>
+        <hr />
+
+        <!-- Other Group -->
+        <div class="w3-bar-item w3-text-grey w3-small">Other</div>
+        <a class="w3-bar-item w3-button" asp-controller="GenerateReport" asp-action="GenerateReport">
+            <i class="fa fa-file-pdf-o"></i> &nbsp;View Reports
+        </a>
+        <a class="w3-bar-item w3-button" asp-controller="Account" asp-action="Account">
+            <i class="fa fa-user"></i> &nbsp;My Profile
+        </a>
     </div>
 
 
-    <!-- Main content: shifted right to make space for sidebar -->
-    <div id="main" style="margin-left: 250px;">
+    <div id="main" style="margin-left: 0;">
 
         <!-- Header: remove openNav button -->
         <div class="w3-teal">
             <div class="w3-container" style="display: flex; align-items: center; gap: 16px; padding:20px">
-                <!-- Removed the sidebar toggle button -->
-                <h1 class="display-4" style="margin: 0;">ACCOUNT</h1>
+                <button id="openNav" class="w3-button w3-teal w3-xlarge" onclick="w3_open()">&#9776;</button>
+                <h1 class="display-4" style="margin: 0;">MY PROFILE</h1>
             </div>
         </div>
 
         <div class="w3-container">
             <h4>Ibhayi Pharmacy Systems</h4>
             <hr style="border: 1px solid white; width: 100%; text-align: center;" />
-            <p>
-                Welcome to the Ibhayi Pharmacy Systems Account page.
-            </p>
-            <p>Fill in the fields below to change you logging details</p>
+            <p>Welcome to the Ibhayi Pharmacy Systems Account page.</p>
+            <p>Fill in the fields below to change your login details.</p>
 
-            
-                <div class="col-md-4">
-                    <label for="CellPhoneNumber" class="form-label">Phone Number</label>
-                    <input for="CellPhoneNumber" class="form-control" type="tel" />
-                </div>
+            <div class="col-md-4">
+                <label for="FirstName" class="form-label">First Name</label>
+                <input id="FirstName" class="form-control" type="text" />
+            </div>
             <br />
-                <div class="col-md-4">
-                    <label for="EmailAddress" class="form-label">Email Address</span></label>
-                    <input for="EmailAddress" type="email" class="form-control" aria-required="true" />
-                </div>
+            <div class="col-md-4">
+                <label for="LastName" class="form-label">Last Name</label>
+                <input id="LastName" class="form-control" type="text" />
+            </div>
             <br />
-                <div class="col-md-4">
-                    <label for="Password" class="form-label">Password</label>
-                    <input for="Password" type="text" class="form-control">
-                </div>
+            <div class="col-md-4">
+                <label for="CellPhoneNumber" class="form-label">Phone Number</label>
+                <input id="CellPhoneNumber" class="form-control" type="tel" />
+            </div>
             <br />
-                <div class="col-md-4">
-                    <label for="ConfirmPassword" class="form-label">Comfirm Password</label>
-                    <input for="ComfirmPassword" type="text" class="form-control">
-                </div>
+            <div class="col-md-4">
+                <label for="EmailAddress" class="form-label">Email Address</label>
+                <input id="EmailAddress" type="email" class="form-control" aria-required="true" />
+            </div>
             <br />
+            <div class="col-md-4">
+                <label for="CurrentPassword" class="form-label">Current Password</label>
+                <div class="input-group">
+                    <input id="CurrentPassword" type="password" class="form-control" />
+                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('CurrentPassword')">👁</button>
+                </div>
+            </div>
+            <br />
+            <div class="col-md-4">
+                <label for="NewPassword" class="form-label">New Password</label>
+                <div class="input-group">
+                    <input id="NewPassword" type="password" class="form-control" />
+                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('NewPassword')">👁</button>
+                </div>
+            </div>
+            <br />
+            <div class="col-md-4">
+                <label for="NewPassword" class="form-label">Confirm New Password</label>
+                <div class="input-group">
+                    <input id="ConfirmPassword" type="password" class="form-control" />
+                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('ConfirmPassword')">👁</button>
+                </div>
+            </div>
+            <br />
+
             <div id="allergy-container">
                 <div class="row mb-3 allergy-row align-items-end">
                     <div class="col-md-4">
-                        <label class="form-label">Allergies <span style="color: red;">*</span></label>
+                        <label class="form-label">Allergies</label>
                         <select class="form-select" name="allergies[]">
                             <option value="">-- Select Allergy --</option>
                             <option value="Penicillin">Penicillin</option>
@@ -84,7 +135,7 @@
                 </div>
             </div>
             <br />
-            <button class="btn btn-success"> Save </button>
+            <button class="btn btn-success" id="saveBtn">Save</button>
         </div>
 
     </div>
@@ -125,6 +176,51 @@
             x.previousElementSibling.className.replace(" w3-green", "");
           }
         }
+
+        function togglePassword(id) {
+            const input = document.getElementById(id);
+            input.type = input.type === "password" ? "text" : "password";
+        }
+
+            //validation
+           document.getElementById("saveBtn").addEventListener("click", function (e) {
+            e.preventDefault();
+
+            const first = document.getElementById("FirstName").value.trim();
+            const last = document.getElementById("LastName").value.trim();
+            const phone = document.getElementById("CellPhoneNumber").value.trim();
+            const email = document.getElementById("EmailAddress").value.trim();
+            const currentPass = document.getElementById("CurrentPassword").value;
+            const newPass = document.getElementById("NewPassword").value;
+            const confirmPass = document.getElementById("ConfirmPassword").value;
+
+            if (!first || !last || !phone || !email || !currentPass || !newPass || !confirmPass) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Missing Fields',
+                    text: 'Please fill in all fields before saving.',
+                });
+                return;
+            }
+
+            if (newPass !== confirmPass) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Password Mismatch',
+                    text: 'New Password and Confirm Password do not match.',
+                });
+                return;
+            }
+
+            // success message
+            Swal.fire({
+                icon: 'success',
+                title: 'Saved!',
+                text: 'Your profile has been updated.',
+            });
+
+            // optionally submit form or call backend here
+        });
     </script>
 </body>
 
